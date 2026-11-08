@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.browser-profile/
+backups/
+
+# Keep reviewed presentation evidence; ignore transient browser diagnostics.
+artifacts/*
+!artifacts/browser-results.json
+!artifacts/globe-desktop.png
+!artifacts/globe-mobile.png
+!artifacts/map-desktop.png

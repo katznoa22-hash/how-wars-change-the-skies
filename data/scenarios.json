@@ -1,0 +1,173 @@
+{
+  "version": 2,
+  "model": "Illustrative spherical waypoint model; not operational flight planning",
+  "assumptions": {
+    "earthRadiusKm": 6371,
+    "speedKmh": 860,
+    "fuelKgPerHour": 7500,
+    "densityKgPerLitre": 0.8,
+    "litresPerUSGallon": 3.785411784,
+    "fuelUSDPerGallon": 2.8,
+    "otherUSDPerHour": 2200,
+    "co2KgPerKgFuel": 3.16,
+    "annualSectors": 730
+  },
+  "routes": {
+    "lhr-hnd": {
+      "scenario": "russia",
+      "origin": {
+        "code": "LHR",
+        "name": "London Heathrow Airport",
+        "lat": 51.470748,
+        "lon": -0.459909,
+        "ident": "EGLL"
+      },
+      "destination": {
+        "code": "HND",
+        "name": "Tokyo Haneda International Airport",
+        "lat": 35.549678,
+        "lon": 139.786958,
+        "ident": "RJTT"
+      },
+      "waypoints": [
+        {
+          "name": "Istanbul vicinity",
+          "lat": 40,
+          "lon": 29
+        },
+        {
+          "name": "South Caspian",
+          "lat": 37,
+          "lon": 51
+        },
+        {
+          "name": "Central Asia",
+          "lat": 39,
+          "lon": 70
+        },
+        {
+          "name": "Northern China",
+          "lat": 38,
+          "lon": 105
+        },
+        {
+          "name": "Korea Strait",
+          "lat": 34,
+          "lon": 129
+        }
+      ],
+      "directKm": 9591.91613357662,
+      "detourKm": 12433.875845962299,
+      "extraKm": 2841.9597123856784,
+      "extraPercent": 29.628696423203323,
+      "extraHours": 3.304604316727533,
+      "extraCostUSD": 30185.962242065183,
+      "extraFuelKg": 24784.532375456496,
+      "extraCO2Kg": 78319.12230644253
+    },
+    "fra-sin": {
+      "scenario": "mideast",
+      "origin": {
+        "code": "FRA",
+        "name": "Frankfurt Main Airport",
+        "lat": 50.026706,
+        "lon": 8.55835,
+        "ident": "EDDF"
+      },
+      "destination": {
+        "code": "SIN",
+        "name": "Singapore Changi Airport",
+        "lat": 1.35019,
+        "lon": 103.994003,
+        "ident": "WSSS"
+      },
+      "waypoints": [
+        {
+          "name": "Mediterranean",
+          "lat": 34,
+          "lon": 25
+        },
+        {
+          "name": "Egypt",
+          "lat": 27,
+          "lon": 32
+        },
+        {
+          "name": "Saudi Arabia",
+          "lat": 22,
+          "lon": 43
+        },
+        {
+          "name": "Arabian Sea",
+          "lat": 16,
+          "lon": 62
+        },
+        {
+          "name": "Bay of Bengal",
+          "lat": 10,
+          "lon": 90
+        }
+      ],
+      "directKm": 10280.1888371662,
+      "detourKm": 11528.909328385662,
+      "extraKm": 1248.720491219461,
+      "extraPercent": 12.146863360183945,
+      "extraHours": 1.4520005711854198,
+      "extraCostUSD": 13263.322993133395,
+      "extraFuelKg": 10890.004283890648,
+      "extraCO2Kg": 34412.41353709445
+    },
+    "hel-icn": {
+      "scenario": "russia",
+      "origin": {
+        "code": "HEL",
+        "name": "Helsinki Vantaa Airport",
+        "lat": 60.318363,
+        "lon": 24.963341,
+        "ident": "EFHK"
+      },
+      "destination": {
+        "code": "ICN",
+        "name": "Incheon International Airport",
+        "lat": 37.469101,
+        "lon": 126.450996,
+        "ident": "RKSI"
+      },
+      "waypoints": [
+        {
+          "name": "Baltic",
+          "lat": 56,
+          "lon": 18
+        },
+        {
+          "name": "Black Sea south",
+          "lat": 40,
+          "lon": 30
+        },
+        {
+          "name": "South Caspian",
+          "lat": 37,
+          "lon": 51
+        },
+        {
+          "name": "Central Asia",
+          "lat": 39,
+          "lon": 70
+        },
+        {
+          "name": "Northern China",
+          "lat": 38,
+          "lon": 105
+        }
+      ],
+      "directKm": 7032.05109677715,
+      "detourKm": 11055.49785889791,
+      "extraKm": 4023.4467621207605,
+      "extraPercent": 57.21583513471257,
+      "extraHours": 4.6784264675822795,
+      "extraCostUSD": 42735.16317456321,
+      "extraFuelKg": 35088.1985068671,
+      "extraCO2Kg": 110878.70728170003
+    }
+  }
+}

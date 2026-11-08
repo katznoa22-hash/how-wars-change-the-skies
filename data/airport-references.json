@@ -1,0 +1,16 @@
+{
+  "purpose": "Independent airport-location checks, not navigation coordinates. Five-kilometre tolerance allows different points within a large airport.",
+  "retrieved": "2026-11-08",
+  "airports": {
+    "LHR": {"lat":51.4775,"lon":-0.461388889,"maxDistanceKm":5,"reference":"NATS chart: ARP 512839N 0002741W","url":"https://www.aurora.nats.co.uk/htmlAIP/Publications/2023-05-18-AIRAC/graphics/229425.pdf"},
+    "HND": {"lat":35.552,"lon":139.775333333,"maxDistanceKm":5,"reference":"Japan Meteorological Agency Tokyo International aerodrome: 35 degrees 33.12 minutes N, 139 degrees 46.52 minutes E","url":"https://www.jma.go.jp/jma/kishou/know/kouku/2_kannsoku/28_kikohyo/RJTT_e.pdf"},
+    "FRA": {"lat":50.038666667,"lon":8.595555556,"maxDistanceKm":5,"reference":"Fraport airport venue, not ARP: 50 degrees 02 minutes 19.2 seconds N, 8 degrees 35 minutes 44.0 seconds E","url":"https://b2b.frankfurt-airport.com/de/veranstaltungen-events/fra-lounge/kontakt-anreise.html"},
+    "SIN": {"lat":1.359211111,"lon":103.989325,"maxDistanceKm":5,"reference":"CAAS AIP Changi ARP: 012133.16N 1035921.57E","url":"https://aim-sg.caas.gov.sg/aim-content/uploads/aip/17-SEP-2026/AIP/2026-09-03-000000/html/eAIP/SG-AD-2-WSSS-en-GB.html"},
+    "HEL": {"lat":60.317222222,"lon":24.963333333,"maxDistanceKm":5,"reference":"Fintraffic AIP Helsinki Vantaa ARP: 601902N 0245748E","url":"https://beta.ais.fi/eaip/01%20OCT%202026_2026_10_01/eAIP/EF-AD%202%20EFHK%20-%20HELSINKI-VANTAA%201-fi-FI.html?amdt=show"},
+    "ICN": {"lat":37.4625,"lon":126.439166667,"maxDistanceKm":5,"reference":"Korea Office of Civil Aviation AIP Incheon ARP (2021): 372745N 1262621E","url":"https://aim.koca.go.kr/eaipPub/Package/2021-04-08/html/eAIP/KR-AD-2.RKSI-en-GB.html"}
+  },
+  "additionalExamplesNotInPresentation": {
+    "TLV": {"lat":32.009444444,"lon":34.885555556,"reference":"Israel AIP LLBG ARP: 320034N 0345308E","url":"https://e-aip.azurefd.net/2026-08-06-AIRAC/html/eAIP/LL-AD-2.LLBG-en-GB.html"},
+    "JFK": {"lat":40.639722222,"lon":-73.778888889,"reference":"Approximate position corroborated by FAA airport diagram; not part of model dataset","url":"https://www.faa.gov/Air_traffic/Publications/media/2024-03-21_AIP_Basic_dtd_3-21-24.pdf"}
+  }
+}

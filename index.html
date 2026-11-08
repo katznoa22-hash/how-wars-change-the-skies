@@ -5,13 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>How Wars Change the Skies | Geopolitical Conflict & Global Aviation</title>
   <meta name="description" content="An interactive educational exploration of conflict, airspace closures, flight rerouting economics, and airline decision-making.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   
   <!-- Three.js and OrbitControls for 3D Globe Visualization -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="assets/vendor/three.min.js"></script>
+  <script src="assets/vendor/OrbitControls.js"></script>
 
   <style>
     /* ==========================================================================
@@ -988,6 +985,8 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="assets/v2.css">
+  <script src="data/presentation-data.js"></script>
 </head>
 <body>
 
@@ -1003,7 +1002,7 @@
       </div>
       <div class="brand-title">
         How Wars Change the Skies
-        <span class="brand-badge">Academic Project</span>
+        <span class="brand-badge">Version 2</span>
       </div>
     </div>
 
@@ -1028,7 +1027,7 @@
   <!-- ========================================================================
        SLIDE DECK CONTAINER (10 SLIDES)
        ======================================================================== -->
-  <main class="slide-deck" id="slideDeck">
+  <main class="slide-deck" id="slideDeck"><div id="dataStatus" role="status"></div>
 
     <!-- SLIDE 1: INTRODUCTION & PROJECT VISION -->
     <section class="slide active" id="slide-0">
@@ -1042,17 +1041,17 @@
           <div class="grid-2" style="margin-bottom: 28px;">
             <div class="glass-card" style="padding: 16px;">
               <div class="stat-badge">
-                <span class="stat-value" style="color: var(--accent-cyan);">+3,200</span>
+                <span class="stat-value" id="heroDistance" style="color: var(--accent-cyan);">—</span>
                 <span class="stat-unit">km added</span>
               </div>
-              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Average detour distance on Europe–East Asia routes post-closure.</p>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Model estimate · LHR–HND illustrative detour, not an industry average.</p>
             </div>
             <div class="glass-card" style="padding: 16px;">
               <div class="stat-badge">
-                <span class="stat-value" style="color: var(--accent-amber);">+$34,000</span>
+                <span class="stat-value" id="heroCost" style="color: var(--accent-amber);">—</span>
                 <span class="stat-unit">per flight</span>
               </div>
-              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Incremental operating cost for long-haul widebody aircraft.</p>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Model estimate · same route; assumed fuel price $2.80/US gallon.</p>
             </div>
           </div>
           <button class="nav-btn nav-btn-primary" onclick="goToSlide(1)" style="font-size: 1rem; padding: 12px 28px;">
@@ -1071,8 +1070,8 @@
             </svg>
           </div>
           <div style="position: relative; z-index: 2; text-align: center; margin-top: 24px;">
-            <div style="font-weight: 700; color: #ffffff; font-size: 1.1rem;">Interactive 3D Simulation Platform</div>
-            <p style="font-size: 0.82rem; color: var(--accent-cyan); margin-top: 4px;">Three.js WebGL &middot; Python Haversine Physics &middot; Scenario Engine</p>
+            <div style="font-weight: 700; color: #ffffff; font-size: 1.1rem;">Geography shapes every decision</div>
+            <p style="font-size: 0.82rem; color: var(--accent-cyan); margin-top: 4px;">Three.js WebGL &middot; Python Distance Model &middot; Scenario Engine</p>
           </div>
         </div>
       </div>
@@ -1080,224 +1079,17 @@
 
     <!-- SLIDE 2: THE INVISIBLE HIGHWAYS OF THE SKY -->
     <section class="slide" id="slide-1">
-      <div class="slide-header">
-        <div class="slide-category">Aviation Network Fundamentals</div>
-        <h2 class="slide-title">The Invisible Highways of the Sky</h2>
-        <p class="slide-subtitle">Commercial aircraft do not fly arbitrary direct lines. They navigate structured global air corridors dictated by international treaties, radar zones, and sovereign airspace.</p>
-      </div>
-
-      <div class="grid-3" style="margin-bottom: 24px;">
-        <div class="concept-card cyan">
-          <div class="concept-card-title">
-            <span class="tag tag-cyan">Physics & Math</span>
-            Great Circle Routes
-          </div>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">
-            Because the Earth is an oblate spheroid, the shortest distance between two points on a sphere is a <em>Great Circle arc</em>. Flying near the Arctic is often the fastest path between Europe and Asia.
-          </p>
-          <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.08); padding: 8px; border-radius: 4px;">
-            d = 2R &times; arcsin(&radic;(sin&sup2;(&Delta;&phi;/2) + cos &phi;&sub1; cos &phi;&sub2; sin&sup2;(&Delta;&lambda;/2)))
-          </div>
-        </div>
-
-        <div class="concept-card amber">
-          <div class="concept-card-title">
-            <span class="tag tag-amber">International Law</span>
-            Sovereign Airspace
-          </div>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">
-            Codified by the <strong>1944 Chicago Convention (Article 1)</strong>: every sovereign nation exercises complete and exclusive sovereignty over the airspace above its territory and territorial waters.
-          </p>
-          <div style="font-size: 0.85rem; color: var(--accent-amber);">
-            &rarr; No civil aircraft may fly over foreign territory without explicit diplomatic authorization or bilateral overflight rights.
-          </div>
-        </div>
-
-        <div class="concept-card purple">
-          <div class="concept-card-title">
-            <span class="tag tag-green">Air Traffic Control</span>
-            FIRs (Flight Information Regions)
-          </div>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">
-            The world's sky is divided into contiguous Flight Information Regions (FIRs). Each is managed by civil air navigation providers (ANSPs) issuing navigation charges and flight clearances.
-          </p>
-          <div style="font-size: 0.85rem; color: var(--text-muted);">
-            Conflict in a single FIR forces airliners to divert around the entire boundary, causing severe domino bottlenecks.
-          </div>
-        </div>
-      </div>
-
-      <div class="glass-card" style="display: flex; align-items: center; justify-content: space-between;">
-        <div>
-          <strong style="color: #ffffff;">Key Takeaway:</strong>
-          <span style="color: var(--text-muted); margin-left: 8px;">A conflict does not need to affect destination airports to paralyze a route—closing transit corridors breaks global long-haul economics.</span>
-        </div>
-        <button class="nav-btn" onclick="goToSlide(2)">Continue to Airspace Closures →</button>
-      </div>
+<div class="slide-header"><div class="slide-category">Aviation Network Fundamentals</div><h2 class="slide-title">The Invisible Highways of the Sky</h2><p class="slide-subtitle">A route connects airports through airspace. Geography gives a starting point; permissions, weather and air traffic services shape the flight.</p></div><div class="grid-3"><div class="glass-card"><h3 style="margin-bottom:12px">Great-circle distance</h3><p style="color:var(--text-muted)">On a spherical Earth, a great-circle arc is the shortest surface path between two points. It often looks curved on a flat map. Our model uses this as a theoretical baseline, not a recorded flight path.</p></div><div class="glass-card"><h3 style="margin-bottom:12px">Sovereign airspace</h3><p style="color:var(--text-muted)">The Chicago Convention recognizes state sovereignty over territorial airspace (Article 1). Scheduled international services need the relevant state authorization (Article 6). Different rules apply to non-scheduled flights.</p></div><div class="glass-card"><h3 style="margin-bottom:12px">FIR: Flight Information Region</h3><p style="color:var(--text-muted)">An FIR is an area where flight information and alerting services are provided. Its boundary need not match a country border. A restriction may cover only part of an FIR, selected altitudes or specific operators.</p></div></div><div class="provenance"><span class="evidence-badge">Verified legal reference</span><a href="https://www.icao.int/sites/default/files/2024-12/7300_9ed.pdf" target="_blank" rel="noopener">ICAO · Chicago Convention, Articles 1, 5, 6 and 9</a></div><div class="glass-card"><strong>Follow the chain:</strong> conflict → airspace restrictions → rerouting → extra operating demands → airline decisions.</div>
     </section>
 
     <!-- SLIDE 3: WHAT HAPPENS WHEN AIRSPACE CLOSES? -->
     <section class="slide" id="slide-2">
-      <div class="slide-header">
-        <div class="slide-category">Operational Mechanics</div>
-        <h2 class="slide-title">What Happens When Airspace Closes?</h2>
-        <p class="slide-subtitle">When hostilities erupt, civil aviation regulators issue urgent NOTAMs (Notices to Air Missions) closing airspace to civilian aircraft to prevent catastrophic shoot-downs.</p>
-      </div>
-
-      <div class="process-timeline">
-        <div class="step-box">
-          <div class="step-number">PHASE 01</div>
-          <div class="step-title">Hostility / Hazard</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Surface-to-air missile threats, GPS spoofing, or active electronic jamming make civil transit hazardous.</p>
-        </div>
-
-        <div class="step-box">
-          <div class="step-number">PHASE 02</div>
-          <div class="step-title">NOTAM Issuance</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">ICAO, FAA, and EASA issue Conflict Zone Information Bulletins (CZIBs) and emergency airspace prohibitions.</p>
-        </div>
-
-        <div class="step-box">
-          <div class="step-number">PHASE 03</div>
-          <div class="step-title">Instant Airborne Diversion</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Flights already airborne must enter holding patterns, burn reserve fuel, or divert to alternate divert hubs.</p>
-        </div>
-
-        <div class="step-box">
-          <div class="step-number">PHASE 04</div>
-          <div class="step-title">Strategic Rerouting</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">Airlines redesign flight plans via narrow safe choke points, adding thousands of miles and severe crew duty limits.</p>
-        </div>
-      </div>
-
-      <div class="split-compare">
-        <div class="compare-side peace">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-            <strong style="color: var(--accent-green); font-size: 1.1rem;">Normal Peacetime Corridors</strong>
-            <span class="tag tag-green">Optimal Efficiency</span>
-          </div>
-          <ul style="color: var(--text-muted); font-size: 0.88rem; list-style-position: inside; line-height: 1.8;">
-            <li>Direct great-circle routes across Eurasia & Middle East.</li>
-            <li>Optimized jetstream tailwinds reducing block fuel burn.</li>
-            <li>Single flight crew duty shifts without relief layovers.</li>
-            <li>High cargo payload capacity (no fuel weight penalty).</li>
-          </ul>
-        </div>
-
-        <div class="compare-side conflict">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-            <strong style="color: var(--accent-red); font-size: 1.1rem;">Restricted / Detour Corridors</strong>
-            <span class="tag tag-red">Operational Bottleneck</span>
-          </div>
-          <ul style="color: var(--text-muted); font-size: 0.88rem; list-style-position: inside; line-height: 1.8;">
-            <li>Circumnavigation around entire subcontinent landmasses.</li>
-            <li>Severe airway congestion in remaining open bottlenecks.</li>
-            <li>Crew duty timeouts requiring double crews or technical fuel stops.</li>
-            <li>Payload displacement: cargo left behind to carry diversion fuel.</li>
-          </ul>
-        </div>
-      </div>
+<div class="slide-header"><div class="slide-category">Operational Mechanics</div><h2 class="slide-title">What Happens When Airspace Closes?</h2><p class="slide-subtitle">Closures, regulator advice and an airline’s own risk assessment are different inputs. None can be replaced by choosing the cheapest route.</p></div><div class="process-timeline"><div class="step-box"><div class="step-number">STEP 01</div><h3>Identify the disruption</h3><p class="source-note">Conflict may create hazards or trigger restrictions on particular operators.</p></div><div class="step-box"><div class="step-number">STEP 02</div><h3>Read the notices</h3><p class="source-note">A NOTAM is an official notice of operational information. States publish restrictions; EASA also publishes conflict-zone advice and bulletins.</p></div><div class="step-box"><div class="step-number">STEP 03</div><h3>Review affected flights</h3><p class="source-note">Airlines and air traffic services assess whether departures, rerouting, holding or diversions are needed.</p></div><div class="step-box"><div class="step-number">STEP 04</div><h3>Replan the operation</h3><p class="source-note">A feasible alternative must account for permissions, aircraft performance, fuel, crew and airport availability.</p></div></div><div class="split-compare"><div class="glass-card"><h3 style="margin-bottom:12px">Baseline: theoretical shortest path</h3><p style="color:var(--text-muted)">The cyan route is a geometric reference. Actual flights also respond to winds, weather, airways, traffic and permissions.</p></div><div class="glass-card"><h3 style="margin-bottom:12px">Detour: illustrative waypoint path</h3><p style="color:var(--text-muted)">The amber route shows how a longer path changes distance and estimated cost. It is not a verified historical track or an operationally approved alternative.</p></div></div><p class="source-note">Historical example: <a href="https://www.easa.europa.eu/en/newsroom-and-events/news/latest-developments-middle-east" target="_blank" rel="noopener">EASA, 14 April 2024</a> reported temporary closures issued by the relevant airspace owners through NOTAMs.</p>
     </section>
 
     <!-- SLIDE 4: TWO CONFLICTS, GLOBAL CONSEQUENCES (CASE STUDIES) -->
     <section class="slide" id="slide-3">
-      <div class="slide-header">
-        <div class="slide-category">Historical Empirical Case Studies</div>
-        <h2 class="slide-title">Two Conflicts, Global Consequences</h2>
-        <p class="slide-subtitle">Examine how the Russia–Ukraine War and Middle East regional airspace restrictions fundamentally restructured commercial aviation routing.</p>
-      </div>
-
-      <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchCaseTab('russia')">Case Study A: Russia–Ukraine War (2022–Present)</button>
-        <button class="tab-btn" onclick="switchCaseTab('mideast')">Case Study B: Middle East Regional Tensions (2024)</button>
-      </div>
-
-      <div class="tab-content active" id="case-russia">
-        <div class="grid-2">
-          <div class="glass-card">
-            <h3 style="color: #ffffff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-              <span class="tag tag-red">Airspace Closure</span>
-              The Siberian Corridor Ban
-            </h3>
-            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 14px;">
-              Following the February 2022 invasion, the European Union, UK, US, and allies banned Russian carriers. In response, Russia closed <strong>17 million km&sup2; of Siberian airspace</strong> to 36 nations.
-            </p>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: 14px; border-radius: var(--radius-sm); border-left: 3px solid var(--accent-red);">
-              <div style="font-weight: 600; color: #ffffff; font-size: 0.88rem;">The Finnair Dilemma:</div>
-              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
-                Helsinki's entire business model was built as the fastest EU hub to Asia via Siberia. The closure rendered Helsinki 3 to 4 hours farther from Tokyo and Seoul, turning its geographic advantage into a severe handicap.
-              </p>
-            </div>
-          </div>
-
-          <div class="glass-card">
-            <h3 style="color: #ffffff; margin-bottom: 12px;">Strategic Consequences</h3>
-            <div class="metric-bar-group">
-              <div class="metric-row">
-                <div class="metric-label-row">
-                  <span>Europe to Tokyo Flight Duration</span>
-                  <span style="color: var(--accent-amber); font-weight: 700;">+3.5 to +4.0 Hours</span>
-                </div>
-                <div class="bar-track"><div class="bar-fill reroute" style="width: 82%;"></div></div>
-              </div>
-              <div class="metric-row">
-                <div class="metric-label-row">
-                  <span>Jet Fuel Burn Increase</span>
-                  <span style="color: var(--accent-red); font-weight: 700;">+25% to +35%</span>
-                </div>
-                <div class="bar-track"><div class="bar-fill reroute" style="width: 75%; background: var(--accent-red);"></div></div>
-              </div>
-              <div class="metric-row">
-                <div class="metric-label-row">
-                  <span>Competitive Asymmetry</span>
-                  <span style="color: var(--accent-cyan); font-weight: 700;">Chinese / Gulf Carriers Retain Access</span>
-                </div>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Non-sanctioned airlines continue using Russian airspace, gaining an unsustainable multi-hour cost and travel time advantage over Western carriers.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="case-mideast">
-        <div class="grid-2">
-          <div class="glass-card">
-            <h3 style="color: #ffffff; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-              <span class="tag tag-amber">Tactical Volatility</span>
-              Middle East Choke Points
-            </h3>
-            <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 14px;">
-              The Middle East forms the primary aerial crossroads connecting Europe, Africa, and South/Southeast Asia. Missile and drone exchanges in 2024 caused rolling temporary closures across Iranian, Iraqi, Jordanian, and Israeli FIRs.
-            </p>
-            <div style="background: rgba(0, 0, 0, 0.3); padding: 14px; border-radius: var(--radius-sm); border-left: 3px solid var(--accent-amber);">
-              <div style="font-weight: 600; color: #ffffff; font-size: 0.88rem;">Narrowed Squeezes:</div>
-              <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
-                Hundreds of daily widebody flights were funneled into narrow corridors over Egypt, Saudi Arabia, and the Persian Gulf, creating massive air traffic management delays and mandatory holding times.
-              </p>
-            </div>
-          </div>
-
-          <div class="glass-card">
-            <h3 style="color: #ffffff; margin-bottom: 12px;">Operational Realities</h3>
-            <div class="metric-bar-group">
-              <div class="metric-row">
-                <div class="metric-label-row">
-                  <span>Airway Congestion in Remaining Corridors</span>
-                  <span style="color: var(--accent-amber); font-weight: 700;">Extreme Slot Restrictions</span>
-                </div>
-                <div class="bar-track"><div class="bar-fill reroute" style="width: 90%;"></div></div>
-              </div>
-              <div class="metric-row">
-                <div class="metric-label-row">
-                  <span>Insurance War-Risk Premia</span>
-                  <span style="color: var(--accent-red); font-weight: 700;">+300% Spike on Regional Hubs</span>
-                </div>
-                <div class="bar-track"><div class="bar-fill reroute" style="width: 70%; background: var(--accent-red);"></div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="slide-header"><div class="slide-category">Dated Historical Case Studies</div><h2 class="slide-title">Two Conflicts, Global Consequences</h2><p class="slide-subtitle">Two documented examples explain the mechanism. The route models on the following slides are separate teaching scenarios, not reconstructions of these events.</p></div><div class="tab-bar"><button class="tab-btn active" onclick="switchCaseTab('russia')">Case A · Russia / Ukraine context</button><button class="tab-btn" onclick="switchCaseTab('mideast')">Case B · 13–14 April 2024</button></div><div class="tab-content active" id="case-russia"><div class="grid-2"><div class="glass-card"><h3 style="margin-bottom:12px">Airline-reported route changes</h3><p style="color:var(--text-muted)">Finnair reports bypassing Russian airspace on services to Asia. This is an operator-specific example: access and restrictions differ between airlines and dates. It does not establish a single global average detour.</p></div><div class="glass-card"><h3 style="margin-bottom:12px">Why the geography matters</h3><p style="color:var(--text-muted)">A northern European hub can lose access to short eastbound paths. Longer alternatives affect flying time, aircraft rotations and fuel requirements. Our LHR–HND and HEL–ICN examples quantify chosen hypothetical waypoint paths.</p></div></div><div class="provenance"><span class="evidence-badge">Airline-reported fact</span><a href="https://www.finnair.com/fr-en/flight-information/travel-updates/changes-in-finnair-flights-to-asia-and-russia-2548118" target="_blank" rel="noopener">Finnair · Flights to Asia bypass Russian airspace</a><span>Retrieved 8 November 2026; advisory is subject to updates.</span></div></div><div class="tab-content" id="case-mideast"><div class="grid-2"><div class="glass-card"><h3 style="margin-bottom:12px">A short-lived regional disruption</h3><p style="color:var(--text-muted)">EASA’s 14 April 2024 notice described temporary airspace closures in Israel, Lebanon, Jordan, Iraq and Iran during military exchanges on 13–14 April. The notice said the relevant NOTAMs had expired during 14 April.</p></div><div class="glass-card"><h3 style="margin-bottom:12px">Keep the time window visible</h3><p style="color:var(--text-muted)">Temporary closures can disrupt connectivity even when a destination is elsewhere. The presentation does not claim those April 2024 closures remain active. Red country shading is geographic context, not an exact closure footprint.</p></div></div><div class="provenance"><span class="evidence-badge">Verified historical event</span><a href="https://www.easa.europa.eu/en/newsroom-and-events/news/latest-developments-middle-east" target="_blank" rel="noopener">EASA · Latest developments in the Middle East, 14 April 2024</a></div></div>
     </section>
 
     <!-- SLIDE 5: THE FLIGHT REROUTING CHALLENGE -->
@@ -1305,40 +1097,40 @@
       <div class="slide-header">
         <div class="slide-category">Quantitative Route Physics</div>
         <h2 class="slide-title">The Flight Rerouting Challenge</h2>
-        <p class="slide-subtitle">Compare baseline great-circle trajectories with mandatory conflict circumnavigations across representative global routes.</p>
+        <p class="slide-subtitle">Compare calculated great-circle baselines with illustrative waypoint detours. Every displayed route uses the same data as the globe.</p>
       </div>
 
       <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 16px;">
-        <label style="font-weight: 600; color: var(--text-muted);">Select Analyzed Route:</label>
+        <label for="routeSelector" style="font-weight: 600; color: var(--text-muted);">Select illustrative route:</label>
         <select id="routeSelector" onchange="updateRouteMetrics()" style="background: rgba(13, 24, 53, 0.9); color: #ffffff; border: 1px solid var(--border-focus); padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; cursor: pointer;">
-          <option value="lhr-hnd">London Heathrow (LHR) ⇄ Tokyo Haneda (HND) [Russia Closure]</option>
-          <option value="fra-sin">Frankfurt (FRA) ⇄ Singapore Changi (SIN) [Middle East Closure]</option>
-          <option value="hel-icn">Helsinki (HEL) ⇄ Seoul Incheon (ICN) [Siberian Bypass]</option>
+          <option value="lhr-hnd">London Heathrow (LHR) ⇄ Tokyo Haneda (HND) [Illustrative Russia bypass]</option>
+          <option value="fra-sin">Frankfurt (FRA) ⇄ Singapore Changi (SIN) [Illustrative regional bypass]</option>
+          <option value="hel-icn">Helsinki (HEL) ⇄ Seoul Incheon (ICN) [Illustrative southern bypass]</option>
         </select>
       </div>
 
       <div class="grid-4" style="margin-bottom: 24px;">
         <div class="glass-card">
           <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Direct Distance</div>
-          <div class="stat-value" id="dispDirectDist" style="color: var(--accent-cyan);">9,588 km</div>
+          <div class="stat-value" id="dispDirectDist" style="color: var(--accent-cyan);">—</div>
           <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Theoretical Great-Circle</div>
         </div>
 
         <div class="glass-card">
           <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Detour Distance</div>
-          <div class="stat-value" id="dispDetourDist" style="color: var(--accent-amber);">12,380 km</div>
-          <div style="font-size: 0.75rem; color: var(--accent-amber); margin-top: 4px;" id="dispDistDelta">+2,792 km (+29%)</div>
+          <div class="stat-value" id="dispDetourDist" style="color: var(--accent-amber);">—</div>
+          <div style="font-size: 0.75rem; color: var(--accent-amber); margin-top: 4px;" id="dispDistDelta">—</div>
         </div>
 
         <div class="glass-card">
           <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Flight Time Impact</div>
-          <div class="stat-value" id="dispTimeDelta" style="color: var(--accent-red);">+3.3 Hours</div>
-          <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Assumes 860 km/h B777 cruise</div>
+          <div class="stat-value" id="dispTimeDelta" style="color: var(--accent-red);">—</div>
+          <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Assumed average ground speed: 860 km/h</div>
         </div>
 
         <div class="glass-card">
           <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Cost Penalty / Flight</div>
-          <div class="stat-value" id="dispCostDelta" style="color: #ffffff;">+$28,400</div>
+          <div class="stat-value" id="dispCostDelta" style="color: #ffffff;">—</div>
           <div style="font-size: 0.75rem; color: var(--accent-amber); margin-top: 4px;">Fuel + Crew + Maintenance</div>
         </div>
       </div>
@@ -1346,9 +1138,11 @@
       <div class="glass-card">
         <h4 style="color: #ffffff; margin-bottom: 8px;">Analytical Model Assumptions:</h4>
         <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6;">
-          Distances are computed using the spherical <strong>Haversine formula</strong> ($R_{Earth} = 6,371\text{ km}$). Alternative routes are computed through required non-belligerent international navigation waypoints (e.g. via Baku, Tashkent, and Anchorage corridors). Values exclude seasonal high-altitude jetstream variations and ATC holding vectors.
+          <span class="evidence-badge model">Model estimate</span> Python sums spherical Haversine distances (Earth radius 6,371 km). Extra hours = extra distance / 860 km/h. Default cost assumes 7,500 kg fuel/h, density 0.8 kg/L, $2.80/US gallon and $2,200/h other operating costs. Waypoints are hypothetical; weather, permissions, crew and aircraft feasibility are not modeled.
+          <br><strong>Waypoints:</strong> <span id="routeWaypoints"></span>
         </p>
       </div>
+      <div class="route-chart" role="img" aria-label="Calculated distance comparison; both bars share a zero origin and the detour defines the maximum."><div class="route-chart-row"><span>Baseline</span><div class="route-chart-track"><span id="baselineBar" style="background:var(--accent-cyan)"></span></div><strong id="baselineBarValue"></strong></div><div class="route-chart-row"><span>Detour</span><div class="route-chart-track"><span style="width:100%;background:var(--accent-amber)"></span></div><strong id="detourBarValue"></strong></div></div>
     </section>
 
     <!-- SLIDE 6: 3D GLOBE INTERACTIVE VISUALIZATION -->
@@ -1356,12 +1150,12 @@
       <div class="slide-header" style="margin-bottom: 14px;">
         <div class="slide-category">Interactive WebGL Experience</div>
         <h2 class="slide-title">Explore the 3D Globe</h2>
-        <p class="slide-subtitle">Drag to rotate the planet, scroll to zoom. Toggle between scenarios to observe how conflict exclusion zones bend commercial flight paths.</p>
+        <p class="slide-subtitle">Drag to rotate, scroll to zoom. Compare a theoretical shortest path with an illustrative detour. Country shading provides historical context, not live restrictions.</p>
       </div>
 
       <div class="globe-stage-container">
         <!-- WebGL Canvas -->
-        <canvas id="globeCanvas"></canvas>
+        <canvas id="globeCanvas" role="img" aria-label="Interactive Earth with country outlines, airport markers, baseline and illustrative detour routes"></canvas><canvas id="mapCanvas" role="img" aria-label="Equirectangular world map with the same countries, airports and routes"></canvas><div id="globeLabels" aria-hidden="true"></div><div id="globeStatus" role="status">Local geographic data · no live airspace feed</div>
 
         <!-- Top Left HUD -->
         <div class="globe-hud">
@@ -1376,25 +1170,26 @@
         <div class="route-legend">
           <div class="legend-item">
             <div class="legend-line baseline"></div>
-            <span>Original Baseline Path (Great Circle)</span>
+            <span>Theoretical baseline · dashed cyan</span>
           </div>
           <div class="legend-item">
             <div class="legend-line reroute"></div>
-            <span>Conflict Rerouting Detour Arc</span>
+            <span>Illustrative detour · solid amber</span>
           </div>
           <div class="legend-item">
             <div class="legend-line closed-zone"></div>
-            <span>Restricted Conflict FIR Airspace Zone</span>
+            <span>Country context · red (not FIRs)</span>
           </div>
         </div>
 
         <!-- Globe Controls Bottom Right -->
         <div class="globe-controls-panel">
-          <button class="action-btn" onclick="setGlobeScenario('russia')">Russia Closure</button>
-          <button class="action-btn" onclick="setGlobeScenario('mideast')">Middle East Closure</button>
+          <button class="action-btn" data-scenario="russia" aria-pressed="true" onclick="setGlobeScenario('russia')">Russia context</button>
+          <button class="action-btn" data-scenario="mideast" aria-pressed="false" onclick="setGlobeScenario('mideast')">Middle East context</button><button class="action-btn" id="rotateGlobe" onclick="toggleGlobeRotation()">Pause rotation</button><button class="action-btn" id="mapToggle" aria-pressed="false" onclick="toggleMapView()">Show 2D map</button>
           <button class="action-btn" onclick="resetGlobeCamera()" title="Reset Camera View">⟲ Reset Camera</button>
         </div>
       </div>
+      <div class="provenance"><label for="globeRouteSelect">Route:</label><select id="globeRouteSelect" onchange="chooseGlobeRoute(this.value)"><option value="lhr-hnd">LHR → HND</option><option value="fra-sin">FRA → SIN</option><option value="hel-icn">HEL → ICN</option></select><span class="evidence-badge model">Illustrative scenario</span></div><p class="source-note" id="globeRouteDescription"></p><p class="source-note">Natural Earth v5.1.2, 1:110m country geometry. Generalized boundaries are not FIR boundaries, territorial-water limits or verified restriction polygons. No route is represented as operationally safe or approved.</p>
     </section>
 
     <!-- SLIDE 7: THE HIDDEN COST OF A DETOUR -->
@@ -1402,7 +1197,7 @@
       <div class="slide-header">
         <div class="slide-category">Aviation Economics & Environmental Burden</div>
         <h2 class="slide-title">The Hidden Cost of a Detour</h2>
-        <p class="slide-subtitle">A 3-hour flight extension is not merely inconvenient—it fundamentally destabilizes aircraft economics, crew rostering, and carbon emissions.</p>
+        <p class="slide-subtitle">Explore how assumed extra hours and jet fuel prices change incremental cost and direct combustion CO₂. These are model estimates, not airline invoices.</p>
       </div>
 
       <div class="grid-2">
@@ -1413,16 +1208,16 @@
               <div style="display: flex; gap: 14px;">
                 <div style="font-size: 1.4rem;">⛽</div>
                 <div>
-                  <strong style="color: #ffffff;">Jet Fuel Consumption ($4,200 / hr)</strong>
-                  <p style="font-size: 0.84rem; color: var(--text-muted);">A Boeing 777-300ER burns ~7,500 kg of fuel per hour. To carry fuel for 3 extra hours, the plane burns extra fuel just carrying the weight of that extra fuel (compounded fuel burn).</p>
+                  <strong style="color: #ffffff;">Fuel assumption · 7,500 kg/hour</strong>
+                  <p style="font-size: 0.84rem; color: var(--text-muted);">A constant 7,500 kg/hour is a teaching assumption, not an aircraft performance specification. Fuel cost and CO₂ use the same mass. The model excludes fuel-to-carry-fuel effects, winds and climb/descent.</p>
                 </div>
               </div>
 
               <div style="display: flex; gap: 14px;">
                 <div style="font-size: 1.4rem;">👨‍✈️</div>
                 <div>
-                  <strong style="color: #ffffff;">Crew Duty Rest & Relief Limits ($1,800 / hr)</strong>
-                  <p style="font-size: 0.84rem; color: var(--text-muted);">Commercial aviation regulations (FAA Part 117 / EASA FTL) cap two-pilot crew duty at 14 hours. Crossing 15 hours requires a four-pilot augmented crew and dedicated sleeping bunks.</p>
+                  <strong style="color: #ffffff;">Other operations assumption · $2,200/hour</strong>
+                  <p style="font-size: 0.84rem; color: var(--text-muted);">This illustrative combined crew and maintenance allowance is not a published airline rate. Real crew limits depend on reporting time, sectors, augmentation and the applicable rules; there is no universal threshold used here.</p>
                 </div>
               </div>
 
@@ -1430,7 +1225,7 @@
                 <div style="font-size: 1.4rem;">📦</div>
                 <div>
                   <strong style="color: #ffffff;">Displaced High-Yield Air Freight</strong>
-                  <p style="font-size: 0.84rem; color: var(--text-muted);">Every extra ton of reserve jet fuel tankered reduces allowable revenue belly cargo by 1 ton. Airlines lose tens of thousands of dollars in commercial cargo per flight.</p>
+                  <p style="font-size: 0.84rem; color: var(--text-muted);">Additional fuel may reduce payload when weight limits bind. The effect depends on aircraft, route and loading; this model does not assign an unsupported cargo revenue loss.</p>
                 </div>
               </div>
             </div>
@@ -1447,10 +1242,10 @@
 
             <div class="slider-group">
               <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
-                <span style="color: var(--text-muted);">Assumed Jet Fuel Price ($/gallon):</span>
+                <span style="color: var(--text-muted);">Assumed Jet Fuel Price ($/US gallon):</span>
                 <strong style="color: var(--accent-cyan); font-family: var(--font-mono);" id="valFuelPrice">$2.80</strong>
               </div>
-              <input type="range" id="inputFuelPrice" min="1.50" max="4.50" step="0.10" value="2.80" oninput="recalcCostSimulator()">
+              <input type="range" id="inputFuelPrice" aria-label="Assumed jet fuel price in dollars per US gallon" min="1.50" max="4.50" step="0.10" value="2.80" oninput="recalcCostSimulator()">
             </div>
 
             <div class="slider-group">
@@ -1458,70 +1253,32 @@
                 <span style="color: var(--text-muted);">Added Flight Hours per Flight:</span>
                 <strong style="color: var(--accent-amber); font-family: var(--font-mono);" id="valExtraHours">3.2 hrs</strong>
               </div>
-              <input type="range" id="inputExtraHours" min="0.5" max="5.0" step="0.1" value="3.2" oninput="recalcCostSimulator()">
+              <input type="range" id="inputExtraHours" aria-label="Added flight hours per flight" min="0.5" max="5.0" step="0.1" value="3.2" oninput="recalcCostSimulator()">
             </div>
 
             <div style="background: rgba(0, 0, 0, 0.4); border-radius: var(--radius-sm); padding: 18px; margin-top: 18px; border: 1px solid var(--border-subtle);">
               <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                 <span style="color: var(--text-muted); font-size: 0.88rem;">Incremental Cost per Single Flight:</span>
-                <strong style="font-family: var(--font-mono); font-size: 1.25rem; color: var(--accent-amber);" id="resFlightCost">$28,160</strong>
+                <strong style="font-family: var(--font-mono); font-size: 1.25rem; color: var(--accent-amber);" id="resFlightCost">—</strong>
               </div>
               <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                <span style="color: var(--text-muted); font-size: 0.88rem;">Annual Penalty (Daily Roundtrip):</span>
-                <strong style="font-family: var(--font-mono); font-size: 1.25rem; color: var(--accent-red);" id="resAnnualCost">$20,556,800</strong>
+                <span style="color: var(--text-muted); font-size: 0.88rem;">Annual estimate (730 identical sectors):</span>
+                <strong style="font-family: var(--font-mono); font-size: 1.25rem; color: var(--accent-red);" id="resAnnualCost">—</strong>
               </div>
               <div style="display: flex; justify-content: space-between;">
-                <span style="color: var(--text-muted); font-size: 0.88rem;">Added CO₂ Emissions / Flight:</span>
-                <strong style="font-family: var(--font-mono); font-size: 1.1rem; color: #ffffff;" id="resCO2">~24.5 Tons</strong>
+                <span style="color: var(--text-muted); font-size: 0.88rem;">Direct combustion CO₂ / flight:</span>
+                <strong style="font-family: var(--font-mono); font-size: 1.1rem; color: #ffffff;" id="resCO2">—</strong>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="provenance"><span class="evidence-badge model">Linear model</span><span>Fuel mass = extra hours × 7,500 kg/h. US gallons = kg / 0.8 / 3.785411784. CO₂ = fuel kg × 3.16.</span></div><p class="source-note"><a href="https://www.icao.int/sites/default/files/environmental-protection/CORSIA/CORSIA-FAQ.html" target="_blank" rel="noopener">ICAO CORSIA FAQ · 3.16 kg CO₂/kg conventional jet fuel</a>. Factor verified; fuel burn, price, density and other costs are assumptions. Emissions exclude lifecycle and non-CO₂ climate effects. Annual estimate assumes identical detours both directions, every day.</p>
     </section>
 
     <!-- SLIDE 8: AIRLINES UNDER PRESSURE (MANAGERIAL TRADE-OFFS) -->
     <section class="slide" id="slide-7">
-      <div class="slide-header">
-        <div class="slide-category">Executive Management Strategy</div>
-        <h2 class="slide-title">Airlines Under Pressure: The Four Dilemmas</h2>
-        <p class="slide-subtitle">When airspace closes, aviation executives face severe operational and managerial trade-offs where every available choice imposes heavy penalties.</p>
-      </div>
-
-      <div class="grid-4" style="margin-bottom: 24px;">
-        <div class="glass-card" style="border-top: 4px solid var(--accent-red);">
-          <div style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">1. Operational Cost</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            Absorbing millions in detour fuel or passing costs to passengers via fuel surcharges. High ticket prices risk passenger leakage to non-sanctioned carriers.
-          </p>
-        </div>
-
-        <div class="glass-card" style="border-top: 4px solid var(--accent-amber);">
-          <div style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">2. Aircraft Utilization</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            A plane flying 15 hours instead of 11 misses its return connection schedule. One aircraft out of rotation creates cascading cancellations across the domestic network.
-          </p>
-        </div>
-
-        <div class="glass-card" style="border-top: 4px solid var(--accent-cyan);">
-          <div style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">3. Airport Slot Rules</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            Under European "Use It or Lose It" rules (80/20 slot rule), airlines that suspend routes risk permanently forfeiting ultra-valuable takeoff and landing slots at Heathrow or Haneda.
-          </p>
-        </div>
-
-        <div class="glass-card" style="border-top: 4px solid var(--accent-purple);">
-          <div style="font-size: 1.1rem; font-weight: 700; color: #ffffff; margin-bottom: 8px;">4. Passenger Safety & Trust</div>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            Navigating near conflict fringes increases risk of GPS spoofing and accidental tracking. Passenger brand trust is irreparably damaged by safety compromises.
-          </p>
-        </div>
-      </div>
-
-      <div class="glass-card" style="background: rgba(13, 24, 53, 0.5);">
-        <strong style="color: var(--accent-cyan);">Executive Consensus:</strong>
-        <span style="color: var(--text-muted); margin-left: 8px;">Aviation management during geopolitical crises is not about finding an ideal solution—it is the disciplined optimization of competing losses.</span>
-      </div>
+<div class="slide-header"><div class="slide-category">Executive Management Strategy</div><h2 class="slide-title">Airlines Under Pressure: The Four Dilemmas</h2><p class="slide-subtitle">Safety and legal feasibility are prerequisites. Within those constraints, managers compare costs, schedule resilience and passenger needs.</p></div><div class="grid-4"><div class="glass-card"><h3 style="margin-bottom:12px">1 · Operating expense</h3><p style="color:var(--text-muted)">Longer flights consume more fuel and can increase crew and maintenance costs. The size of the effect depends on the operation; Slide 7 lets you vary selected assumptions.</p></div><div class="glass-card"><h3 style="margin-bottom:12px">2 · Aircraft rotations</h3><p style="color:var(--text-muted)">Extra flight time can reduce time available for the next departure. Whether delays spread depends on schedule buffers, spare aircraft and connection timing.</p></div><div class="glass-card"><h3 style="margin-bottom:12px">3 · Network continuity</h3><p style="color:var(--text-muted)">Suspension may reduce connectivity, while partner carriage can preserve some service. Airport slot implications depend on the jurisdiction, season and any applicable relief.</p></div><div class="glass-card"><h3 style="margin-bottom:12px">4 · Passenger trust</h3><p style="color:var(--text-muted)">Clear communication, rebooking and refund arrangements matter during disruption. No cost comparison establishes that a flight is safe to operate.</p></div></div><div class="glass-card" style="margin-top:24px"><span class="evidence-badge model">Managerial interpretation</span><p>There is no universal winning strategy. The next slide provides a transparent teaching exercise rather than a forecast of airline performance.</p></div>
     </section>
 
     <!-- SLIDE 9: YOU ARE THE AIRLINE MANAGER (INTERACTIVE SIMULATOR) -->
@@ -1529,7 +1286,7 @@
       <div class="slide-header">
         <div class="slide-category">Interactive Decision-Making Lab</div>
         <h2 class="slide-title">You Are the Airline Manager</h2>
-        <p class="slide-subtitle">Select a scenario, choose your managerial strategy, and evaluate the financial, punctuality, and strategic consequences.</p>
+        <p class="slide-subtitle">Choose a hypothetical scenario and response. Compare modeled incremental expenses and explicitly invented reliability and retention scores.</p>
       </div>
 
       <div class="sim-container">
@@ -1538,8 +1295,8 @@
           <div>
             <label style="font-size: 0.78rem; text-transform: uppercase; color: var(--accent-cyan); font-weight: 700; font-family: var(--font-mono);">Step 1: Crisis Scenario</label>
             <select id="simScenarioSelect" onchange="runSimulation()" style="width: 100%; margin-top: 6px; background: rgba(10, 18, 40, 0.95); color: #ffffff; border: 1px solid var(--border-focus); padding: 10px; border-radius: var(--radius-sm); font-size: 0.9rem; outline: none;">
-              <option value="siberia">Eurasian Crisis: Siberian Corridor Indefinitely Closed</option>
-              <option value="mideast">Middle East Crisis: Levant & Gulf Airspace Restricted</option>
+              <option value="siberia">Illustrative LHR–HND southern detour</option>
+              <option value="mideast">Illustrative FRA–SIN regional detour</option>
             </select>
           </div>
 
@@ -1548,32 +1305,32 @@
             <div style="display: flex; flex-direction: column; gap: 8px;">
               <div class="sim-option-card selected" onclick="selectSimOption(this, 'reroute')">
                 <strong style="color: #ffffff; font-size: 0.92rem;">Option A: Long Polar / Southern Detour</strong>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Absorb maximum flight time and fuel burn. Keep direct nonstop flights operating.</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Keep nonstop service using the modeled detour; add flying time and expense.</p>
               </div>
 
               <div class="sim-option-card" onclick="selectSimOption(this, 'techstop')">
                 <strong style="color: #ffffff; font-size: 0.92rem;">Option B: Add Technical Refueling Stop</strong>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Stop in Anchorage or Baku. Avoid double pilot crew and protect revenue cargo capacity.</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Assume an extra stop: 0.5 airborne hours, 75 ground minutes and $4,500 handling.</p>
               </div>
 
               <div class="sim-option-card" onclick="selectSimOption(this, 'suspend')">
                 <strong style="color: #ffffff; font-size: 0.92rem;">Option C: Suspend Route & Redeploy Fleet</strong>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Halt flights, reallocate widebody aircraft to Transatlantic routes, risk market share.</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Halt the modeled service. Lost revenue, refunds and fleet redeployment are not valued.</p>
               </div>
 
               <div class="sim-option-card" onclick="selectSimOption(this, 'codeshare')">
                 <strong style="color: #ffffff; font-size: 0.92rem;">Option D: Partner Codeshare Interline</strong>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Transfer passengers onto neutral / non-restricted alliance partner carriers.</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Assume available partner carriage with separate permissions and safety review.</p>
               </div>
             </div>
           </div>
 
           <div>
-            <label style="font-size: 0.78rem; text-transform: uppercase; color: var(--accent-cyan); font-weight: 700; font-family: var(--font-mono);">Step 3: Crude Oil Environment</label>
+            <label style="font-size: 0.78rem; text-transform: uppercase; color: var(--accent-cyan); font-weight: 700; font-family: var(--font-mono);">Step 3: Assumed Jet Fuel Price</label>
             <select id="simOilPrice" onchange="runSimulation()" style="width: 100%; margin-top: 6px; background: rgba(10, 18, 40, 0.95); color: #ffffff; border: 1px solid var(--border-subtle); padding: 8px; border-radius: var(--radius-sm); font-size: 0.85rem;">
-              <option value="moderate">Moderate Crude ($75 / barrel)</option>
-              <option value="high" selected>High Volatility ($105 / barrel)</option>
-              <option value="spike">Geopolitical Spike ($135 / barrel)</option>
+              <option value="moderate">Lower jet fuel price ($2.20/US gal)</option>
+              <option value="high" selected>Default jet fuel price ($2.80/US gal)</option>
+              <option value="spike">Higher jet fuel price ($3.80/US gal)</option>
             </select>
           </div>
         </div>
@@ -1587,33 +1344,31 @@
 
           <div class="grid-3">
             <div class="glass-card" style="padding: 14px;">
-              <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Direct Cost Impact</div>
-              <div class="stat-value" id="simStatCost" style="font-size: 1.4rem; color: var(--accent-amber);">-$31,200</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Incremental expense</div>
+              <div class="stat-value" id="simStatCost" style="font-size: 1.4rem; color: var(--accent-amber);">—</div>
               <div style="font-size: 0.7rem; color: var(--text-dim);">Per flight sector</div>
             </div>
 
             <div class="glass-card" style="padding: 14px;">
-              <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">On-Time Reliability</div>
-              <div class="stat-value" id="simStatReliability" style="font-size: 1.4rem; color: var(--accent-cyan);">72%</div>
-              <div style="font-size: 0.7rem; color: var(--text-dim);">Slot punctuality</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Simulated reliability</div>
+              <div class="stat-value" id="simStatReliability" style="font-size: 1.4rem; color: var(--accent-cyan);">—</div>
+              <div style="font-size: 0.7rem; color: var(--text-dim);">Teaching score, not measured</div>
             </div>
 
             <div class="glass-card" style="padding: 14px;">
-              <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Market Share Retained</div>
-              <div class="stat-value" id="simStatMarket" style="font-size: 1.4rem; color: var(--accent-green);">88%</div>
-              <div style="font-size: 0.7rem; color: var(--text-dim);">Customer retention</div>
+              <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Simulated retention</div>
+              <div class="stat-value" id="simStatMarket" style="font-size: 1.4rem; color: var(--accent-green);">—</div>
+              <div style="font-size: 0.7rem; color: var(--text-dim);">Teaching score, not measured</div>
             </div>
           </div>
 
           <div style="background: rgba(0, 0, 0, 0.4); border-radius: var(--radius-sm); padding: 18px; border-left: 4px solid var(--accent-cyan); flex-grow: 1;">
             <div style="font-weight: 700; color: #ffffff; font-size: 0.95rem; margin-bottom: 6px;" id="simDebriefTitle">Managerial Debrief</div>
-            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;" id="simDebriefText">
-              Operating the direct southern detour preserves commercial market share and vital airport slot pairs, but exposes the airline to heavy fuel volatility. If crude spikes above $110/barrel, this route shifts from marginally profitable to severely loss-making.
-            </p>
+            <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;" id="simDebriefText">—</p>
           </div>
 
           <div style="font-size: 0.75rem; color: var(--text-dim); text-align: center;">
-            Note: All simulation calculations are illustrative models for educational comparative analysis.
+            <span class="evidence-badge model">Simulated scenario</span> Safety and legality must be assessed independently. Costs exclude revenue, fixed costs and disruption compensation.<details><summary>Show assumptions and scoring</summary><p id="simAssumptions"></p><p>Reliability / retention inputs: long-haul detour 74/88; stop 62/68; partner 82/55. Regional detour 84/91; stop 72/78; partner 86/65. Suspension: reliability N/A, retention 0. Scores are invented percentages for comparing assumptions; they are not fitted to airline data.</p></details>
           </div>
         </div>
       </div>
@@ -1621,51 +1376,7 @@
 
     <!-- SLIDE 10: THE FUTURE OF AVIATION RESILIENCE -->
     <section class="slide" id="slide-9">
-      <div class="slide-header">
-        <div class="slide-category">Synthesis & Academic Conclusions</div>
-        <h2 class="slide-title">The Future of Aviation Resilience</h2>
-        <p class="slide-subtitle">Conflict in the skies transforms geography into a strategic vulnerability. How can modern airlines and regulators build operational resilience?</p>
-      </div>
-
-      <div class="grid-3" style="margin-bottom: 24px;">
-        <div class="glass-card">
-          <div style="color: var(--accent-cyan); font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">1. Fleet Agility</div>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">
-            Ultra-efficient next-generation twin-engine widebodies (Airbus A350-900ULR, Boeing 787-9) with extended range and lower fuel burn per seat-kilometer provide the sole defense against extreme distance detours.
-          </p>
-        </div>
-
-        <div class="glass-card">
-          <div style="color: var(--accent-amber); font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">2. Regulatory Asymmetry</div>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">
-            Airspace bans unilaterally applied distort international competition. Western carriers face multi-hour penalties while non-aligned competitors capture market share over identical city pairs.
-          </p>
-        </div>
-
-        <div class="glass-card">
-          <div style="color: var(--accent-green); font-weight: 700; font-size: 1.05rem; margin-bottom: 8px;">3. Multi-Hub Redundancy</div>
-          <p style="font-size: 0.88rem; color: var(--text-muted);">
-            Airlines can no longer rely on single-hub transit models. Strategic alliances, diversified technical refueling agreements, and flexible air traffic agreements are critical national security assets.
-          </p>
-        </div>
-      </div>
-
-      <div class="glass-card" style="margin-bottom: 16px;">
-        <h4 style="color: #ffffff; margin-bottom: 6px;">Academic References & Sources:</h4>
-        <div style="font-size: 0.82rem; color: var(--text-dim); display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div>&bull; ICAO: Convention on International Civil Aviation (Doc 7300, Chicago 1944)</div>
-          <div>&bull; Eurocontrol: Aviation Impact Analysis of Ukrainian Airspace Closure (2022–2024)</div>
-          <div>&bull; IATA: Economics of Airspace Closures and Long-Haul Rerouting (2023)</div>
-          <div>&bull; Flightradar24 / ADS-B Exchange: Empirical Flight Path Tracking Data</div>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
-        <span style="font-size: 0.85rem; color: var(--text-muted);">
-          University Project &middot; <strong>How Wars Change the Skies</strong> &middot; Developed with AI-Assisted Pair Programming
-        </span>
-        <button class="nav-btn" onclick="goToSlide(0)">⟲ Return to Start</button>
-      </div>
+<div class="slide-header"><div class="slide-category">Synthesis & Sources</div><h2 class="slide-title">The Future of Aviation Resilience</h2><p class="slide-subtitle">Restrictions change the usable network. Longer routes can raise operating demands, but the result depends on geography, the airline and the assumptions.</p></div><div class="grid-3"><div class="glass-card"><h3 style="margin-bottom:12px">Plan flexible networks</h3><p style="color:var(--text-muted)">Consider alternative routings, partners and recovery plans. Aircraft range alone does not resolve permissions, crew, airport or safety constraints.</p></div><div class="glass-card"><h3 style="margin-bottom:12px">Keep evidence visible</h3><p style="color:var(--text-muted)">Separate dated historical events from current conditions and theoretical models. A country outline does not establish which airspace was closed.</p></div><div class="glass-card"><h3 style="margin-bottom:12px">Test assumptions</h3><p style="color:var(--text-muted)">Distance is reproducible; costs depend on inputs. Use sensitivity analysis and avoid presenting invented scores as measured airline performance.</p></div></div><div class="glass-card" style="margin-top:18px"><h3>Sources, dates and credits</h3><ul style="padding-left:20px;line-height:1.9"><li><a href="https://www.icao.int/sites/default/files/2024-12/7300_9ed.pdf" target="_blank" rel="noopener">ICAO · Chicago Convention (1944), Articles 1, 5, 6, 9</a> — airspace sovereignty and authorizations.</li><li><a href="https://www.finnair.com/fr-en/flight-information/travel-updates/changes-in-finnair-flights-to-asia-and-russia-2548118" target="_blank" rel="noopener">Finnair · Flights to Asia bypass Russian airspace</a> — airline-reported service changes; retrieved 8 November 2026.</li><li><a href="https://www.easa.europa.eu/en/newsroom-and-events/news/latest-developments-middle-east" target="_blank" rel="noopener">EASA · Latest developments in the Middle East (14 April 2024)</a> — temporary closures and expiry on that date.</li><li><a href="https://www.icao.int/sites/default/files/environmental-protection/CORSIA/CORSIA-FAQ.html" target="_blank" rel="noopener">ICAO · CORSIA FAQ, fuel conversion factors</a> — 3.16 kg CO₂/kg conventional jet fuel.</li><li><a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener">Natural Earth v5.1.2 · public-domain country data</a>; <a href="https://github.com/datasets/airport-codes" target="_blank" rel="noopener">Airport Codes / OurAirports community dataset</a> — airport coordinates, snapshot 8 November 2026.</li></ul><p class="source-note">Three.js r128 / OrbitControls · MIT license included. Cartographic texture is rendered locally from Natural Earth geometry. Version 2 implemented with Codex; exact prompts and actual results are in the prompts folder.</p></div><p class="source-note"><strong>Limitations:</strong> spherical Earth; illustrative waypoints; constant speed and fuel burn; no winds, certified performance, live notices, FIR dataset, safety assessment or historical track reconstruction. See <a href="SOURCES.md">source and model audit</a>.</p><button class="nav-btn" onclick="goToSlide(0)">⟲ Return to Start</button>
     </section>
 
   </main>
@@ -1696,7 +1407,7 @@
        KEYBOARD SHORTCUTS MODAL
        ======================================================================== -->
   <div class="modal-backdrop" id="shortcutsModal" onclick="closeShortcutsModal(event)">
-    <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" onclick="event.stopPropagation()">
       <div class="modal-title">
         Keyboard Navigation
         <button class="action-btn" onclick="toggleShortcutsModal()" style="padding: 4px 8px;">✕</button>
@@ -1766,7 +1477,9 @@
       const container = document.getElementById("dotsContainer");
       container.innerHTML = "";
       for (let i = 0; i < TOTAL_SLIDES; i++) {
-        const dot = document.createElement("div");
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.setAttribute("aria-label", `Go to slide ${i+1}: ${slideTitles[i]}`);
         dot.className = `dot-item ${i === 0 ? "active" : ""}`;
         dot.onclick = () => goToSlide(i);
 
@@ -1821,8 +1534,10 @@
       dots.forEach((dot, idx) => {
         if (idx === currentSlide) {
           dot.classList.add("active");
+          dot.setAttribute("aria-current", "step");
         } else {
           dot.classList.remove("active");
+          dot.removeAttribute("aria-current");
         }
       });
     }
@@ -1831,8 +1546,13 @@
        2. KEYBOARD NAVIGATION & SHORTCUTS
        ========================================================================== */
     window.addEventListener("keydown", (e) => {
+      if (document.getElementById("shortcutsModal").classList.contains("active")) {
+        if (e.key === "Escape") closeShortcutsModal();
+        return;
+      }
       // Don't intercept when inside an input or select
-      if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+      if (["INPUT", "SELECT", "TEXTAREA", "SUMMARY"].includes(document.activeElement.tagName)) return;
+      if (e.key === " " && document.activeElement.closest("button, [role=button]")) return;
 
       if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") {
         e.preventDefault();
@@ -1896,440 +1616,7 @@
     /* ==========================================================================
        4. SLIDE 5: ROUTE COMPARISON DATA ENGINE
        ========================================================================== */
-    const routeDataset = {
-      "lhr-hnd": {
-        directKm: "9,588 km",
-        detourKm: "12,380 km",
-        deltaDist: "+2,792 km (+29%)",
-        deltaTime: "+3.3 Hours",
-        cost: "+$28,400"
-      },
-      "fra-sin": {
-        directKm: "10,285 km",
-        detourKm: "11,540 km",
-        deltaDist: "+1,255 km (+12%)",
-        deltaTime: "+1.5 Hours",
-        cost: "+$14,250"
-      },
-      "hel-icn": {
-        directKm: "7,045 km",
-        detourKm: "10,480 km",
-        deltaDist: "+3,435 km (+48%)",
-        deltaTime: "+4.1 Hours",
-        cost: "+$36,800"
-      }
-    };
-
-    function updateRouteMetrics() {
-      const sel = document.getElementById("routeSelector").value;
-      const data = routeDataset[sel];
-      if (!data) return;
-
-      document.getElementById("dispDirectDist").innerText = data.directKm;
-      document.getElementById("dispDetourDist").innerText = data.detourKm;
-      document.getElementById("dispDistDelta").innerText = data.deltaDist;
-      document.getElementById("dispTimeDelta").innerText = data.deltaTime;
-      document.getElementById("dispCostDelta").innerText = data.cost;
-    }
-
-    /* ==========================================================================
-       5. SLIDE 7: DYNAMIC DETOUR COST CALCULATOR
-       ========================================================================== */
-    function recalcCostSimulator() {
-      const fuelPrice = parseFloat(document.getElementById("inputFuelPrice").value);
-      const extraHours = parseFloat(document.getElementById("inputExtraHours").value);
-
-      document.getElementById("valFuelPrice").innerText = `$${fuelPrice.toFixed(2)}`;
-      document.getElementById("valExtraHours").innerText = `${extraHours.toFixed(1)} hrs`;
-
-      // B777 cruise fuel burn: ~2,400 gallons/hour
-      // Crew & maintenance hourly rate: ~$2,200/hour
-      const hourlyFuelCost = 2400 * fuelPrice;
-      const hourlyOtherOps = 2200;
-      const totalHourlyCost = hourlyFuelCost + hourlyOtherOps;
-
-      const singleFlightCost = Math.round(totalHourlyCost * extraHours);
-      const annualCost = singleFlightCost * 365 * 2; // Daily round-trip
-      const co2Tons = (extraHours * 7.5 * 3.16).toFixed(1); // 7.5t fuel * 3.16 tCO2/tFuel
-
-      document.getElementById("resFlightCost").innerText = `$${singleFlightCost.toLocaleString()}`;
-      document.getElementById("resAnnualCost").innerText = `$${annualCost.toLocaleString()}`;
-      document.getElementById("resCO2").innerText = `~${co2Tons} Tons`;
-    }
-
-    /* ==========================================================================
-       6. SLIDE 9: AIRLINE DECISION SIMULATOR ENGINE
-       ========================================================================== */
-    let currentStrategy = "reroute";
-
-    function selectSimOption(cardEl, strategy) {
-      document.querySelectorAll(".sim-option-card").forEach(c => c.classList.remove("selected"));
-      cardEl.classList.add("selected");
-      currentStrategy = strategy;
-      runSimulation();
-    }
-
-    function runSimulation() {
-      const scenario = document.getElementById("simScenarioSelect").value;
-      const oilPrice = document.getElementById("simOilPrice").value;
-
-      let costStr = "";
-      let reliabilityStr = "";
-      let marketStr = "";
-      let badgeStr = "";
-      let debriefTitle = "";
-      let debriefText = "";
-
-      const oilMultiplier = (oilPrice === "spike") ? 1.45 : (oilPrice === "high" ? 1.2 : 1.0);
-
-      if (currentStrategy === "reroute") {
-        const costVal = Math.round(28000 * oilMultiplier);
-        costStr = `-$${costVal.toLocaleString()}`;
-        reliabilityStr = "74%";
-        marketStr = "88%";
-        badgeStr = (oilPrice === "spike") ? "High Cost Exposure" : "Viable Strategy";
-        debriefTitle = "Nonstop Direct Detour Assessment";
-        debriefText = `By choosing to reroute continuously around the closed FIRs, your airline retains loyal high-yield business travelers and critical Heathrow/Tokyo slots. However, with fuel at ${oilPrice} prices, the single-flight margin drops severely. If crude stays elevated, this strategy produces heavy quarterly operating deficits.`;
-      } else if (currentStrategy === "techstop") {
-        const costVal = Math.round(18500 * oilMultiplier);
-        costStr = `-$${costVal.toLocaleString()}`;
-        reliabilityStr = "62%";
-        marketStr = "68%";
-        badgeStr = "Operational Compromise";
-        debriefTitle = "Technical Fuel Stop Assessment";
-        debriefText = `Stopping midway (e.g. Anchorage or Baku) prevents the need for a 4-pilot relief crew and restores full belly-cargo payload. However, the mandatory 75-minute ground stop damages business passenger preference, resulting in a 32% defection to nonstop foreign competitors.`;
-      } else if (currentStrategy === "suspend") {
-        costStr = "$0 Direct";
-        reliabilityStr = "100%";
-        marketStr = "0% (Lost)";
-        badgeStr = "Conservative / Defense";
-        debriefTitle = "Route Suspension & Fleet Redeployment";
-        debriefText = `Canceling the route immediately caps operational bleeding and allows you to redeploy high-capacity widebody aircraft onto highly profitable North Atlantic routes. The critical downside: you surrender historical route dominance and face permanent revocation of grandfathered takeoff/landing slots under 80/20 regulations.`;
-      } else if (currentStrategy === "codeshare") {
-        costStr = "-$8,500 Fee";
-        reliabilityStr = "82%";
-        marketStr = "55%";
-        badgeStr = "Pragmatic Alliance";
-        debriefTitle = "Alliance Partner Codesharing";
-        debriefText = `Partnering with non-restricted carriers (or non-aligned Gulf airlines) allows you to sell tickets while outsourcing operational overflight risks. You collect modest distribution commissions and maintain corporate account presence, but surrender operational control and primary seat margin.`;
-      }
-
-      document.getElementById("simStatCost").innerText = costStr;
-      document.getElementById("simStatReliability").innerText = reliabilityStr;
-      document.getElementById("simStatMarket").innerText = marketStr;
-      document.getElementById("simRatingBadge").innerText = badgeStr;
-      document.getElementById("simDebriefTitle").innerText = debriefTitle;
-      document.getElementById("simDebriefText").innerText = debriefText;
-    }
-
-    /* ==========================================================================
-       7. THREE.JS 3D GLOBE ENGINE (SLIDE 6)
-       ========================================================================== */
-    let scene, camera, renderer, controls;
-    let earthMesh, atmosphereMesh;
-    let routeGroup = null;
-    let globeInitialized = false;
-    let isGlobeRenderingActive = false;
-
-    function initThreeGlobe() {
-      const container = document.getElementById("globeCanvas");
-      if (!container || typeof THREE === "undefined") return;
-
-      const width = container.parentElement.clientWidth;
-      const height = container.parentElement.clientHeight;
-
-      // 1. Scene & Camera
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-      camera.position.set(0, 18, 38);
-
-      // 2. Renderer
-      renderer = new THREE.WebGLRenderer({ canvas: container, antialias: true, alpha: true });
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-      // 3. Orbit Controls
-      if (typeof THREE.OrbitControls !== "undefined") {
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
-        controls.minDistance = 22;
-        controls.maxDistance = 65;
-        controls.autoRotate = true;
-        controls.autoRotateSpeed = 0.5;
-      }
-
-      // 4. Lighting
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-      scene.add(ambientLight);
-
-      const dirLight = new THREE.DirectionalLight(0x00d2ff, 1.2);
-      dirLight.position.set(30, 20, 40);
-      scene.add(dirLight);
-
-      // 5. Procedural Earth Sphere
-      const earthRadius = 12;
-      const sphereGeo = new THREE.SphereGeometry(earthRadius, 64, 64);
-      
-      // Procedural Earth canvas texture with continent outlines
-      const canvasTexture = createProceduralEarthTexture();
-      const earthMat = new THREE.MeshPhongMaterial({
-        map: canvasTexture,
-        specular: new THREE.Color(0x223355),
-        shininess: 15,
-        wireframe: false
-      });
-      earthMesh = new THREE.Mesh(sphereGeo, earthMat);
-      scene.add(earthMesh);
-
-      // 6. Atmospheric Glow Outer Shell
-      const atmosGeo = new THREE.SphereGeometry(earthRadius * 1.035, 64, 64);
-      const atmosMat = new THREE.MeshBasicMaterial({
-        color: 0x00d2ff,
-        transparent: true,
-        opacity: 0.15,
-        side: THREE.BackSide
-      });
-      atmosphereMesh = new THREE.Mesh(atmosGeo, atmosMat);
-      scene.add(atmosphereMesh);
-
-      // 7. Route & Hazard Container Group
-      routeGroup = new THREE.Group();
-      earthMesh.add(routeGroup);
-
-      // Initialize with default scenario (Russia closure)
-      renderScenarioRoutes('russia');
-
-      globeInitialized = true;
-      isGlobeRenderingActive = true;
-
-      // Start Animation Loop
-      animateGlobe();
-    }
-
-    // Procedural Earth texture generation with continent vector approximations
-    function createProceduralEarthTexture() {
-      const texCanvas = document.createElement("canvas");
-      texCanvas.width = 2048;
-      texCanvas.height = 1024;
-      const ctx = texCanvas.getContext("2d");
-
-      // Deep Ocean background
-      ctx.fillStyle = "#071126";
-      ctx.fillRect(0, 0, texCanvas.width, texCanvas.height);
-
-      // Latitude/Longitude Grid Lines
-      ctx.strokeStyle = "rgba(0, 210, 255, 0.12)";
-      ctx.lineWidth = 1;
-
-      for (let lat = 0; lat <= texCanvas.height; lat += 64) {
-        ctx.beginPath();
-        ctx.moveTo(0, lat);
-        ctx.lineTo(texCanvas.width, lat);
-        ctx.stroke();
-      }
-      for (let lon = 0; lon <= texCanvas.width; lon += 64) {
-        ctx.beginPath();
-        ctx.moveTo(lon, 0);
-        ctx.lineTo(lon, texCanvas.height);
-        ctx.stroke();
-      }
-
-      // Simplified schematic continents representation
-      ctx.fillStyle = "#122549";
-      ctx.strokeStyle = "#00d2ff";
-      ctx.lineWidth = 2;
-
-      // Eurasia Landmass
-      drawContinentPolygon(ctx, [
-        [700, 250], [950, 180], [1350, 160], [1600, 220], [1750, 320],
-        [1680, 500], [1480, 480], [1300, 580], [1150, 520], [900, 480], [740, 380]
-      ]);
-
-      // Africa
-      drawContinentPolygon(ctx, [
-        [950, 450], [1180, 480], [1200, 680], [1100, 850], [980, 780], [900, 550]
-      ]);
-
-      // North America
-      drawContinentPolygon(ctx, [
-        [150, 150], [450, 140], [550, 280], [480, 450], [350, 520], [220, 450], [100, 280]
-      ]);
-
-      // South America
-      drawContinentPolygon(ctx, [
-        [350, 540], [500, 580], [480, 780], [380, 920], [320, 720]
-      ]);
-
-      // Australia
-      drawContinentPolygon(ctx, [
-        [1550, 650], [1750, 640], [1780, 820], [1600, 840], [1520, 740]
-      ]);
-
-      const texture = new THREE.CanvasTexture(texCanvas);
-      return texture;
-    }
-
-    function drawContinentPolygon(ctx, points) {
-      ctx.beginPath();
-      ctx.moveTo(points[0][0], points[0][1]);
-      for (let i = 1; i < points.length; i++) {
-        ctx.lineTo(points[i][0], points[i][1]);
-      }
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-    }
-
-    // Helper: Convert Latitude & Longitude to 3D Cartesian coordinates on sphere
-    function latLonToVector3(lat, lon, radius) {
-      const phi = (90 - lat) * (Math.PI / 180);
-      const theta = (lon + 180) * (Math.PI / 180);
-      const x = -(radius * Math.sin(phi) * Math.cos(theta));
-      const z = radius * Math.sin(phi) * Math.sin(theta);
-      const y = radius * Math.cos(phi);
-      return new THREE.Vector3(x, y, z);
-    }
-
-    // Helper: Create an elevated 3D Quadratic/Cubic Bezier curve representing flight arc
-    function createFlightArc(startLat, startLon, endLat, endLon, radius, colorHex, peakElevation = 3.5) {
-      const vStart = latLonToVector3(startLat, startLon, radius);
-      const vEnd = latLonToVector3(endLat, endLon, radius);
-
-      // Midpoint elevated above sphere
-      const vMid = new THREE.Vector3().addVectors(vStart, vEnd).multiplyScalar(0.5);
-      const midDist = vMid.length();
-      vMid.normalize().multiplyScalar(radius + peakElevation);
-
-      const curve = new THREE.QuadraticBezierCurve3(vStart, vMid, vEnd);
-      const points = curve.getPoints(64);
-      const geometry = new THREE.BufferGeometry().setFromPoints(points);
-
-      const material = new THREE.LineBasicMaterial({
-        color: colorHex,
-        linewidth: 3,
-        transparent: true,
-        opacity: 0.95
-      });
-
-      return new THREE.Line(geometry, material);
-    }
-
-    // Render routes and hazard zones based on active scenario
-    function renderScenarioRoutes(scenarioType) {
-      if (!routeGroup) return;
-
-      // Clear existing paths
-      while (routeGroup.children.length > 0) {
-        routeGroup.remove(routeGroup.children[0]);
-      }
-
-      const earthRadius = 12;
-
-      if (scenarioType === 'russia') {
-        // 1. Conflict Hazard Dome over Eurasia / Russia
-        const hazardPos = latLonToVector3(60, 85, earthRadius);
-        const hazardGeo = new THREE.SphereGeometry(6.2, 32, 32);
-        const hazardMat = new THREE.MeshBasicMaterial({
-          color: 0xef4444,
-          transparent: true,
-          opacity: 0.22,
-          wireframe: true
-        });
-        const hazardMesh = new THREE.Mesh(hazardGeo, hazardMat);
-        hazardMesh.position.copy(hazardPos);
-        routeGroup.add(hazardMesh);
-
-        // 2. Baseline Direct Route: London (51.5°N, 0.4°W) to Tokyo (35.6°N, 139.7°E) via Siberian Great Circle
-        const baselineArc = createFlightArc(51.5, -0.4, 35.6, 139.7, earthRadius, 0x00d2ff, 4.0);
-        routeGroup.add(baselineArc);
-
-        // 3. Alternative Detour Route via Southern Caucasus & Central Asia
-        // Waypoints: London -> Baku (40.4°N, 49.8°E) -> Tashkent (41.3°N, 69.2°E) -> Tokyo
-        const detourLeg1 = createFlightArc(51.5, -0.4, 40.4, 49.8, earthRadius, 0xf59e0b, 2.5);
-        const detourLeg2 = createFlightArc(40.4, 49.8, 35.6, 139.7, earthRadius, 0xf59e0b, 3.2);
-        routeGroup.add(detourLeg1);
-        routeGroup.add(detourLeg2);
-
-        // Update HUD
-        document.getElementById("hudScenarioName").innerText = "Russia–Ukraine Siberian Closure";
-        document.getElementById("hudRoutePair").innerText = "London (LHR) ⇄ Tokyo (HND)";
-
-      } else if (scenarioType === 'mideast') {
-        // 1. Hazard Zone over Middle East FIRs (32°N, 44°E)
-        const hazardPos = latLonToVector3(32, 44, earthRadius);
-        const hazardGeo = new THREE.SphereGeometry(3.5, 32, 32);
-        const hazardMat = new THREE.MeshBasicMaterial({
-          color: 0xef4444,
-          transparent: true,
-          opacity: 0.25,
-          wireframe: true
-        });
-        const hazardMesh = new THREE.Mesh(hazardGeo, hazardMat);
-        hazardMesh.position.copy(hazardPos);
-        routeGroup.add(hazardMesh);
-
-        // 2. Baseline: Frankfurt (50.0°N, 8.5°E) to Singapore (1.3°N, 103.9°E)
-        const baselineArc = createFlightArc(50.0, 8.5, 1.3, 103.9, earthRadius, 0x00d2ff, 3.6);
-        routeGroup.add(baselineArc);
-
-        // 3. Detour via Egypt & Southern Red Sea Bypass
-        const detourLeg1 = createFlightArc(50.0, 8.5, 26.8, 32.0, earthRadius, 0xf59e0b, 2.2);
-        const detourLeg2 = createFlightArc(26.8, 32.0, 1.3, 103.9, earthRadius, 0xf59e0b, 3.4);
-        routeGroup.add(detourLeg1);
-        routeGroup.add(detourLeg2);
-
-        // Update HUD
-        document.getElementById("hudScenarioName").innerText = "Middle East Regional Airspace Closure";
-        document.getElementById("hudRoutePair").innerText = "Frankfurt (FRA) ⇄ Singapore (SIN)";
-      }
-    }
-
-    function setGlobeScenario(type) {
-      renderScenarioRoutes(type);
-    }
-
-    function resetGlobeCamera() {
-      if (camera && controls) {
-        camera.position.set(0, 18, 38);
-        controls.target.set(0, 0, 0);
-        controls.reset();
-      }
-    }
-
-    function onWindowResizeGlobe() {
-      const container = document.getElementById("globeCanvas");
-      if (!container || !renderer || !camera) return;
-      const width = container.parentElement.clientWidth;
-      const height = container.parentElement.clientHeight;
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-    }
-
-    window.addEventListener("resize", onWindowResizeGlobe);
-
-    function animateGlobe() {
-      requestAnimationFrame(animateGlobe);
-
-      // Only perform rendering calculations if the globe is in view
-      if (!isGlobeRenderingActive) return;
-
-      if (controls) controls.update();
-      if (renderer && scene && camera) {
-        renderer.render(scene, camera);
-      }
-    }
-
-    /* ==========================================================================
-       8. INITIALIZATION RUNNER
-       ========================================================================== */
-    window.addEventListener("DOMContentLoaded", () => {
-      initNavigation();
-      updateRouteMetrics();
-      recalcCostSimulator();
-      runSimulation();
-    });
   </script>
+  <script src="assets/v2.js"></script>
 </body>
 </html>

@@ -1,0 +1,4 @@
+# Preserve downloaded bytes so the source manifest remains valid on every OS.
+assets/vendor/* -text
+data/countries.geojson -text
+*.png binary

@@ -1,0 +1,42 @@
+{
+  "source": "https://raw.githubusercontent.com/datasets/airport-codes/main/data/airport-codes.csv",
+  "retrieved": "2026-11-08",
+  "airports": {
+    "FRA": {
+      "name": "Frankfurt Main Airport",
+      "lat": 50.026706,
+      "lon": 8.55835,
+      "ident": "EDDF"
+    },
+    "HEL": {
+      "name": "Helsinki Vantaa Airport",
+      "lat": 60.318363,
+      "lon": 24.963341,
+      "ident": "EFHK"
+    },
+    "LHR": {
+      "name": "London Heathrow Airport",
+      "lat": 51.470748,
+      "lon": -0.459909,
+      "ident": "EGLL"
+    },
+    "HND": {
+      "name": "Tokyo Haneda International Airport",
+      "lat": 35.549678,
+      "lon": 139.786958,
+      "ident": "RJTT"
+    },
+    "ICN": {
+      "name": "Incheon International Airport",
+      "lat": 37.469101,
+      "lon": 126.450996,
+      "ident": "RKSI"
+    },
+    "SIN": {
+      "name": "Singapore Changi Airport",
+      "lat": 1.35019,
+      "lon": 103.994003,
+      "ident": "WSSS"
+    }
+  }
+}

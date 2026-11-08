@@ -1,0 +1,149 @@
+{
+  "method": "Reverse only when original fails and candidate is within 5 km of independently published airport location",
+  "changes": [
+    {
+      "code": "FRA",
+      "before": {
+        "name": "Frankfurt Main Airport",
+        "lat": 8.55835,
+        "lon": 50.026706,
+        "ident": "EDDF"
+      },
+      "after": {
+        "name": "Frankfurt Main Airport",
+        "lat": 50.026706,
+        "lon": 8.55835,
+        "ident": "EDDF"
+      },
+      "originalDistanceKm": 5985.128,
+      "correctedDistanceKm": 2.972,
+      "reference": {
+        "lat": 50.038666667,
+        "lon": 8.595555556,
+        "maxDistanceKm": 5,
+        "reference": "Fraport airport venue, not ARP: 50 degrees 02 minutes 19.2 seconds N, 8 degrees 35 minutes 44.0 seconds E",
+        "url": "https://b2b.frankfurt-airport.com/de/veranstaltungen-events/fra-lounge/kontakt-anreise.html"
+      }
+    },
+    {
+      "code": "HEL",
+      "before": {
+        "name": "Helsinki Vantaa Airport",
+        "lat": 24.963341,
+        "lon": 60.318363,
+        "ident": "EFHK"
+      },
+      "after": {
+        "name": "Helsinki Vantaa Airport",
+        "lat": 60.318363,
+        "lon": 24.963341,
+        "ident": "EFHK"
+      },
+      "originalDistanceKm": 4767.835,
+      "correctedDistanceKm": 0.127,
+      "reference": {
+        "lat": 60.317222222,
+        "lon": 24.963333333,
+        "maxDistanceKm": 5,
+        "reference": "Fintraffic AIP Helsinki Vantaa ARP: 601902N 0245748E",
+        "url": "https://beta.ais.fi/eaip/01%20OCT%202026_2026_10_01/eAIP/EF-AD%202%20EFHK%20-%20HELSINKI-VANTAA%201-fi-FI.html?amdt=show"
+      }
+    },
+    {
+      "code": "LHR",
+      "before": {
+        "name": "London Heathrow Airport",
+        "lat": -0.459909,
+        "lon": 51.470748,
+        "ident": "EGLL"
+      },
+      "after": {
+        "name": "London Heathrow Airport",
+        "lat": 51.470748,
+        "lon": -0.459909,
+        "ident": "EGLL"
+      },
+      "originalDistanceKm": 7539.736,
+      "correctedDistanceKm": 0.758,
+      "reference": {
+        "lat": 51.4775,
+        "lon": -0.461388889,
+        "maxDistanceKm": 5,
+        "reference": "NATS chart: ARP 512839N 0002741W",
+        "url": "https://www.aurora.nats.co.uk/htmlAIP/Publications/2023-05-18-AIRAC/graphics/229425.pdf"
+      }
+    },
+    {
+      "code": "HND",
+      "before": {
+        "name": "Tokyo Haneda International Airport",
+        "lat": 139.786958,
+        "lon": 35.549678,
+        "ident": "RJTT"
+      },
+      "after": {
+        "name": "Tokyo Haneda International Airport",
+        "lat": 35.549678,
+        "lon": 139.786958,
+        "ident": "RJTT"
+      },
+      "originalDistanceKm": 6463.15,
+      "correctedDistanceKm": 1.083,
+      "reference": {
+        "lat": 35.552,
+        "lon": 139.775333333,
+        "maxDistanceKm": 5,
+        "reference": "Japan Meteorological Agency Tokyo International aerodrome: 35 degrees 33.12 minutes N, 139 degrees 46.52 minutes E",
+        "url": "https://www.jma.go.jp/jma/kishou/know/kouku/2_kannsoku/28_kikohyo/RJTT_e.pdf"
+      }
+    },
+    {
+      "code": "ICN",
+      "before": {
+        "name": "Incheon International Airport",
+        "lat": 126.450996,
+        "lon": 37.469101,
+        "ident": "RKSI"
+      },
+      "after": {
+        "name": "Incheon International Airport",
+        "lat": 37.469101,
+        "lon": 126.450996,
+        "ident": "RKSI"
+      },
+      "originalDistanceKm": 6812.265,
+      "correctedDistanceKm": 1.276,
+      "reference": {
+        "lat": 37.4625,
+        "lon": 126.439166667,
+        "maxDistanceKm": 5,
+        "reference": "Korea Office of Civil Aviation AIP Incheon ARP (2021): 372745N 1262621E",
+        "url": "https://aim.koca.go.kr/eaipPub/Package/2021-04-08/html/eAIP/KR-AD-2.RKSI-en-GB.html"
+      }
+    },
+    {
+      "code": "SIN",
+      "before": {
+        "name": "Singapore Changi Airport",
+        "lat": 103.994003,
+        "lon": 1.35019,
+        "ident": "WSSS"
+      },
+      "after": {
+        "name": "Singapore Changi Airport",
+        "lat": 1.35019,
+        "lon": 103.994003,
+        "ident": "WSSS"
+      },
+      "originalDistanceKm": 9523.428,
+      "correctedDistanceKm": 1.13,
+      "reference": {
+        "lat": 1.359211111,
+        "lon": 103.989325,
+        "maxDistanceKm": 5,
+        "reference": "CAAS AIP Changi ARP: 012133.16N 1035921.57E",
+        "url": "https://aim-sg.caas.gov.sg/aim-content/uploads/aip/17-SEP-2026/AIP/2026-09-03-000000/html/eAIP/SG-AD-2-WSSS-en-GB.html"
+      }
+    }
+  ]
+}

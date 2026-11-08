@@ -1,0 +1,82 @@
+{
+  "browser": "chrome.exe",
+  "mode": "headless; software WebGL (SwiftShader)",
+  "results": [
+    {
+      "name": "10 slides and local model initialize",
+      "result": "passed"
+    },
+    {
+      "name": "all navigation dots, previous/next, keyboard and boundaries",
+      "result": "passed"
+    },
+    {
+      "name": "case study tabs and shortcut modal",
+      "result": "passed"
+    },
+    {
+      "name": "fullscreen enters and exits with a user gesture",
+      "result": "passed"
+    },
+    {
+      "name": "three routes agree with generated data and chart",
+      "result": "passed"
+    },
+    {
+      "name": "fuel and time sliders change cost, emissions use the same fuel mass",
+      "result": "passed"
+    },
+    {
+      "name": "2 scenarios × 4 strategies × 3 prices; suspension punctuality N/A",
+      "result": "passed"
+    },
+    {
+      "name": "3D WebGL, texture, coordinates, route geometry and resource cleanup",
+      "result": "passed"
+    },
+    {
+      "name": "drag, zoom, reset and 2D map toggle",
+      "result": "passed"
+    },
+    {
+      "name": "all slides at desktop and mobile widths without page overflow",
+      "result": "passed"
+    },
+    {
+      "name": "reduced motion pauses rotation by default after reload",
+      "result": "passed"
+    },
+    {
+      "name": "presentation requests no external runtime resources",
+      "result": "passed"
+    },
+    {
+      "name": "direct file preview works with local data and WebGL",
+      "result": "passed"
+    },
+    {
+      "name": "missing model reports a visible error and keeps navigation",
+      "result": "passed"
+    },
+    {
+      "name": "missing Three.js falls back to 2D with explanatory text",
+      "result": "passed"
+    }
+  ],
+  "errors": [],
+  "requests": [
+    "http://127.0.0.1:8765/",
+    "http://127.0.0.1:8765/assets/vendor/three.min.js",
+    "http://127.0.0.1:8765/assets/vendor/OrbitControls.js",
+    "http://127.0.0.1:8765/assets/v2.css",
+    "http://127.0.0.1:8765/data/presentation-data.js",
+    "http://127.0.0.1:8765/assets/v2.js",
+    "http://127.0.0.1:8765/favicon.ico",
+    "<project>/index.html",
+    "<project>/assets/vendor/three.min.js",
+    "<project>/assets/vendor/OrbitControls.js",
+    "<project>/assets/v2.css",
+    "<project>/data/presentation-data.js",
+    "<project>/assets/v2.js"
+  ]
+}
