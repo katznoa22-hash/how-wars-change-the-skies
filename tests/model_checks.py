@@ -60,4 +60,13 @@ class ModelChecks(unittest.TestCase):
         data=subprocess.check_output(['git','show',version_one+':index.html'],cwd=ROOT)
         self.assertEqual(hashlib.sha256(data).hexdigest(),'317d8dd07589417d5883b00849e5bbe818c62f26bb68aec01f9eff1a52021c6e')
 
+    def test_version_two_tag_and_history_preserved(self):
+        version_two='1dd228500b5ba5708412495f1c43704468728b75'
+        tag_object='1e66b7c1a80c3b12f62979bed9a8e78a25962b80'
+        def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT).decode().strip()
+        self.assertEqual(git('cat-file','-t','refs/tags/v2.0'),'tag')
+        self.assertEqual(git('rev-parse','refs/tags/v2.0'),tag_object)
+        self.assertEqual(git('rev-parse','v2.0^{commit}'),version_two)
+        subprocess.run(['git','merge-base','--is-ancestor',version_two,'HEAD'],cwd=ROOT,check=True)
+
 if __name__=='__main__':unittest.main()

@@ -8,7 +8,8 @@ const km = n => Math.round(n).toLocaleString('en-US') + ' km';
 const put = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
 let globeInitialized = false, isGlobeRenderingActive = false;
 let scene, camera, renderer, controls, earthMesh, routeGroup, atmosphere;
-let selectedRoute = 'lhr-hnd', mapMode = false, spin = !reducedMotion.matches;
+let selectedRoute = 'lhr-hnd', mapMode = false, spin = !reducedMotion.matches, webglLost = false;
+let cameraFailure = '';
 let airportLabels = [], geographicLabels = [], movingMarker, movingPoints = [], lastFrame = 0;
 let currentStrategy = 'reroute';
 const R = 12;
@@ -29,10 +30,14 @@ function updateRouteMetrics() {
   put('dispDirectDist', km(r.directKm)); put('dispDetourDist', km(r.detourKm));
   put('dispDistDelta', '+'+km(r.extraKm)+' ('+r.extraPercent.toFixed(1)+'%)');
   put('dispTimeDelta', '+'+r.extraHours.toFixed(2)+' hours'); put('dispCostDelta', '+'+money(r.extraCostUSD));
+  put('routeReading',`${km(r.extraKm)} farther · ${r.extraPercent.toFixed(1)}% longer · ${r.extraHours.toFixed(2)} extra modeled hours. Both bars start at zero.`);
   put('routeWaypoints', routePoints(r).map(p=>p.code || p.name).join(' → '));
+  put('globeDistanceSummary',km(r.directKm)+' baseline → '+km(r.detourKm)+' illustrative detour');
+  document.querySelector('.route-chart').setAttribute('aria-label',`${km(r.directKm)} baseline; ${km(r.detourKm)} illustrative detour. Extra ${km(r.extraKm)}, ${r.extraPercent.toFixed(1)} percent. Both bars start at zero.`);
   document.getElementById('baselineBar').style.width = (100*r.directKm/r.detourKm)+'%';
   put('baselineBarValue',km(r.directKm)); put('detourBarValue',km(r.detourKm));
   document.getElementById('globeRouteSelect').value = selectedRoute;
+  put('useRouteHours','Use '+r.origin.code+'–'+r.destination.code+' hours');
   renderScenarioRoutes(r.scenario);
 }
 function recalcCostSimulator() {
@@ -44,6 +49,22 @@ function recalcCostSimulator() {
   put('valFuelPrice', '$'+price.toFixed(2)); put('valExtraHours',hours.toFixed(1)+' hrs');
   put('resFlightCost',money(cost)); put('resAnnualCost',money(cost*a.annualSectors));
   put('resCO2',(hours*a.fuelKgPerHour*a.co2KgPerKgFuel/1000).toFixed(1)+' tonnes CO₂');
+  const fuel=hours*a.fuelKgPerHour/a.densityKgPerLitre/a.litresPerUSGallon*price;
+  const other=hours*a.otherUSDPerHour;
+  document.getElementById('fuelCostBar').style.width=(cost>0?100*fuel/cost:0)+'%';
+  document.getElementById('otherCostBar').style.width=(cost>0?100*other/cost:0)+'%';
+  put('fuelCostValue',money(fuel));put('otherCostValue',money(other));
+  document.getElementById('costBreakdown').setAttribute('aria-label',`Incremental expense per flight: fuel ${money(fuel)}, other operations ${money(other)}, total ${money(cost)}. Assumptions, not actual airline costs.`);
+  put('costReading',`Incremental expense; annual estimate = one flight × ${a.annualSectors} identical sectors.`);
+}
+function useSelectedRouteHours(){
+  const input=document.getElementById('inputExtraHours');
+  input.value=Math.max(Number(input.min),Math.min(Number(input.max),Number(model.routes[selectedRoute].extraHours.toFixed(1))));
+  recalcCostSimulator();
+  put('costReading',`Using ${selectedRoute.toUpperCase()} extra hours, rounded to the slider's 0.1-hour step. Model assumptions are unchanged.`);
+}
+function resetCostInputs(){
+  document.getElementById('inputFuelPrice').value='2.8';document.getElementById('inputExtraHours').value='3.2';recalcCostSimulator();
 }
 function selectSimOption(card, strategy) {
   document.querySelectorAll('.sim-option-card').forEach(c=>{
@@ -65,9 +86,21 @@ function runSimulation() {
     codeshare: {cost:8500+(short?0:1500), reliability:short?86:82, retention:short?65:55, title:'Arrange partner carriage', text:'Assumes an $8,500 partner fee plus $1,500 for the long-haul scenario. Partner availability, permissions and safety review remain necessary; this is not a way to bypass restrictions.'}
   };
   const s = strategies[currentStrategy];
+  put('simContext',`${route.origin.code} → ${route.destination.code} · +${route.extraHours.toFixed(2)} modeled hours · $${price.toFixed(2)}/US gal fuel`);
+  const difference=s.cost-base;
+  put('simTradeoff',currentStrategy==='suspend'?'No flight operated; zero flying expense excludes wider business losses.':difference===0?'Reference response: the modeled nonstop detour.':`Expense vs nonstop detour: ${money(Math.abs(difference))} ${difference<0?'less':'more'} (estimate).`);
+  const body=document.getElementById('strategyComparison');body.replaceChildren();
+  for(const [key,value] of Object.entries(strategies)){
+    const row=document.createElement('tr');row.dataset.strategy=key;row.setAttribute('aria-current',String(key===currentStrategy));
+    for(const text of [{reroute:'A · Detour',techstop:'B · Stop',suspend:'C · Suspend',codeshare:'D · Partner'}[key],money(value.cost),value.reliability===null?'N/A':value.reliability+'%',value.retention+'%']){
+      const cell=document.createElement('td');cell.textContent=text;row.appendChild(cell);
+    }
+    body.appendChild(row);
+  }
   put('simStatCost',money(s.cost)); put('simStatReliability',s.reliability===null?'N/A':s.reliability+'%');
   put('simStatMarket',s.retention+'%'); put('simRatingBadge','Simulated outcome'); put('simDebriefTitle',s.title);
-  put('simDebriefText',s.text);
+  const summaries={reroute:'Preserve nonstop service; accept extra flying time and expense. Feasibility needs a separate review.',techstop:'Add a stop, flying time and handling fees. No automatic payload or crew benefit is assumed.',suspend:'Operate no flight. Refunds, fixed costs and lost revenue are outside the model.',codeshare:'Use partner carriage with assumed fees. Permissions, availability and safety still need review.'};
+  put('simDebriefText',summaries[currentStrategy]);put('simFullFeedback',s.text);
   put('simAssumptions',`${route.origin.code} → ${route.destination.code}: ${route.extraHours.toFixed(2)} modeled extra hours. Jet fuel $${price.toFixed(2)}/US gal; 7,500 kg/h; density 0.8 kg/L; other operations $2,200/h. Reliability and retention are invented scenario scores, not measured probabilities. No revenue or profit is calculated.`);
 }
 
@@ -116,10 +149,26 @@ function earthTexture(scenario) {
   return texture;
 }
 function globeMessage(text) { put('globeStatus',text); }
+function hasUsableCamera(){
+  return !!(globeInitialized&&camera&&controls&&renderer&&!webglLost&&!renderer.getContext().isContextLost());
+}
+function updateCameraControls(){
+  const usable=hasUsableCamera(),enabled=usable&&!mapMode;
+  document.querySelectorAll('[data-globe-only],#rotateGlobe').forEach(button=>button.disabled=!enabled);
+  if(enabled)globeMessage('');
+  else if(cameraFailure)globeMessage(cameraFailure);
+  else if(webglLost)globeMessage('3D rendering was lost. Camera controls are disabled; the 2D map still works. Reload to retry 3D.');
+  else if(mapMode&&usable)globeMessage('2D map view: camera controls are disabled. Choose Show 3D globe to rotate, zoom or reset the camera.');
+  else globeMessage('3D camera controls are unavailable. Use the 2D map, or reload to retry 3D.');
+}
+function requireCameraControls(){
+  if(hasUsableCamera()&&!mapMode)return true;
+  updateCameraControls();return false;
+}
 function initThreeGlobe() {
   if(globeInitialized) return;
-  if(!model || !geography || !window.THREE) {
-    globeMessage('3D assets unavailable. Use the 2D map if geographic data loaded. Check local asset files.');
+  if(!model || !geography || !window.THREE || typeof THREE.OrbitControls!=='function') {
+    cameraFailure=!model||!geography?'Globe data is unavailable. Restore the local geographic data and reload.':!window.THREE?'The 3D library is unavailable. Camera controls are disabled; use the 2D map or reload to retry.':'3D camera controls are unavailable because the control library could not load. The 2D map still works; reload to retry 3D.';
     mapMode=true; updateViewMode(); return;
   }
   try {
@@ -141,12 +190,15 @@ function initThreeGlobe() {
     }
     routeGroup=new THREE.Group();scene.add(routeGroup);
     globeInitialized=true;isGlobeRenderingActive=true;
-    renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();mapMode=true;updateViewMode();globeMessage('3D context lost; showing 2D map. Reload to restore 3D.');});
+    renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();webglLost=true;mapMode=true;updateViewMode();});
     renderScenarioRoutes(model.routes[selectedRoute].scenario);onWindowResizeGlobe();
+    cameraFailure='';mapMode=false;updateViewMode();
     requestAnimationFrame(animateGlobe);
-    globeMessage('Natural Earth country geometry. Red shading is illustrative country context, not FIR boundaries or live restrictions.');
   } catch(error) {
-    mapMode=true;updateViewMode();globeMessage('WebGL unavailable; showing the 2D map.');
+    globeInitialized=false;isGlobeRenderingActive=false;
+    controls?.dispose();renderer?.dispose();
+    cameraFailure='3D rendering (WebGL) could not initialize. Camera controls are disabled; the 2D map still works. Reload to retry 3D.';
+    mapMode=true;updateViewMode();
   }
 }
 function disposeRoutes() {
@@ -155,9 +207,13 @@ function disposeRoutes() {
   routeGroup.clear();airportLabels=[];geographicLabels=[];document.getElementById('globeLabels').replaceChildren();
 }
 function addRoute(points,color,dashed) {
-  const geometry=new THREE.BufferGeometry().setFromPoints(points);
-  const material=dashed?new THREE.LineDashedMaterial({color,dashSize:.22,gapSize:.13}):new THREE.LineBasicMaterial({color});
-  const line=new THREE.Line(geometry,material);line.computeLineDistances();routeGroup.add(line);
+  if(dashed) {
+    const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineDashedMaterial({color,dashSize:.22,gapSize:.13}));
+    line.computeLineDistances();routeGroup.add(line);
+  } else {
+    const geometry=new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points),100,.04,5,false);
+    routeGroup.add(new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({color})));
+  }
 }
 function renderScenarioRoutes(scenario) {
   if(!model) return;
@@ -204,14 +260,20 @@ function chooseGlobeRoute(key) {
   document.getElementById('routeSelector').value=key;updateRouteMetrics();
 }
 function resetGlobeCamera() {
-  if(!camera)return;
+  if(!requireCameraControls())return;
   const r=model.routes[selectedRoute];
   const halfAngle=Math.atan(Math.tan(camera.fov*Math.PI/360)*Math.min(camera.aspect,1));
   const distance=Math.max(38,R/Math.sin(halfAngle)*1.12);
   const center=latLonToVector3(r.scenario==='russia'?43:23,r.scenario==='russia'?65:48,distance);
-  if(controls)controls.maxDistance=Math.max(65,distance*1.5);
-  if(controls){controls.reset();controls.target.set(0,0,0);}
-  camera.position.copy(center);camera.lookAt(0,0,0);controls?.update();
+  controls.maxDistance=Math.max(65,distance*1.5);
+  const damping=controls.enableDamping,autoRotate=controls.autoRotate;
+  controls.enableDamping=false;controls.autoRotate=false;
+  // Flush OrbitControls' pending rotation/pan/zoom before installing the default.
+  controls.update();
+  controls.target.set(0,0,0);camera.position.copy(center);camera.zoom=1;
+  camera.updateProjectionMatrix();camera.lookAt(0,0,0);controls.update();controls.saveState();
+  controls.enableDamping=damping;controls.autoRotate=autoRotate;
+  updateCameraControls();
 }
 function onWindowResizeGlobe() {
   const box=document.querySelector('.globe-stage-container');
@@ -222,13 +284,21 @@ function toggleGlobeRotation() {
   spin=!spin;if(controls)controls.autoRotate=spin;
   document.getElementById('rotateGlobe').setAttribute('aria-pressed',String(spin));put('rotateGlobe',spin?'Pause rotation':'Resume rotation');
 }
-function toggleMapView(){if(mapMode&&!globeInitialized){globeMessage('3D unavailable; the 2D map remains available.');return;}mapMode=!mapMode;updateViewMode();}
+function zoomGlobe(factor){
+  if(!requireCameraControls()||!Number.isFinite(factor)||factor<=0)return;
+  const offset=camera.position.clone().sub(controls.target);
+  offset.setLength(Math.max(controls.minDistance,Math.min(controls.maxDistance,offset.length()*factor)));
+  camera.position.copy(controls.target).add(offset);controls.update();updateCameraControls();
+}
+function toggleMapView(){if(mapMode&&!hasUsableCamera()){updateCameraControls();return;}mapMode=!mapMode;updateViewMode();}
 function updateViewMode(){
   document.getElementById('globeCanvas').style.display=mapMode?'none':'block';
   document.getElementById('mapCanvas').style.display=mapMode?'block':'none';
   document.getElementById('globeLabels').style.display=mapMode?'none':'block';
   put('mapToggle',mapMode?'Show 3D globe':'Show 2D map');
+  document.getElementById('mapToggle').disabled=mapMode&&!hasUsableCamera();
   document.getElementById('mapToggle').setAttribute('aria-pressed',String(mapMode));drawMap();
+  updateCameraControls();
 }
 function drawMap(){
   if(!model||!geography)return;
@@ -295,4 +365,16 @@ window.addEventListener('DOMContentLoaded',()=>{
     card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();card.click();}});
   });
   document.getElementById('rotateGlobe').setAttribute('aria-pressed',String(spin));put('rotateGlobe',spin?'Pause rotation':'Resume rotation');
+  document.getElementById('globeCanvas').addEventListener('keydown',event=>{
+    if(!camera||!controls||mapMode||webglLost)return;
+    const key=event.key.toLowerCase();
+    if(!['w','a','s','d','+','=','-'].includes(key))return;
+    event.preventDefault();event.stopPropagation();
+    if(['+','=','-'].includes(key)){zoomGlobe(key==='-'?1.15:.85);return;}
+    const spherical=new THREE.Spherical().setFromVector3(camera.position);
+    if(key==='a'||key==='d')spherical.theta+=(key==='a'?-1:1)*.12;
+    else spherical.phi=THREE.MathUtils.clamp(spherical.phi+(key==='w'?-1:1)*.12,.1,Math.PI-.1);
+    camera.position.setFromSpherical(spherical);camera.lookAt(0,0,0);controls.update();
+  });
+  reducedMotion.addEventListener('change',event=>{if(event.matches&&spin)toggleGlobeRotation();});
 });

@@ -8,7 +8,7 @@ import { spawn } from 'node:child_process';
 import assert from 'node:assert/strict';
 const root=resolve(import.meta.dirname,'..');
 const artifacts=resolve(root,'artifacts');await mkdir(artifacts,{recursive:true});
-const results=[],errors=[],requests=[];
+const results=[],errors=[],requests=[],layout=[],cameraChecks=[];
 function sanitizeReport(value){
   if(typeof value==='string'){
     for(const prefix of [pathToFileURL(root).href,root.replaceAll('\\','/'),root])value=value.split(prefix).join('<project>');
@@ -35,6 +35,18 @@ function cdp(method,params={}){return new Promise((resolve,reject)=>{const seq=+
 async function evaluate(expression){const r=await cdp('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails));return r.result.value;}
 async function check(name,fn){await fn();results.push({name,result:'passed'});console.log('PASS',name);}
 async function screenshot(name){const shot=await cdp('Page.captureScreenshot',{format:'png'});await writeFile(resolve(artifacts,name),Buffer.from(shot.data,'base64'));}
+async function clickButton(selector){
+  await evaluate(`document.querySelector(${JSON.stringify(selector)}).scrollIntoView({block:'nearest',inline:'nearest'})`);
+  // Wait for the presentation's 180 ms slide transition and browser hit-test tree.
+  await pause(220);
+  const point=await evaluate(`(()=>{const button=document.querySelector(${JSON.stringify(selector)});const r=button.getBoundingClientRect();const x=r.left+r.width/2,y=r.top+r.height/2;return {x,y,hit:document.elementFromPoint(x,y)?.closest('button')===button,disabled:button.disabled,pointerEvents:getComputedStyle(button).pointerEvents}})()`);
+  assert(point.hit,'Button is intercepted by another element: '+selector);
+  assert.notEqual(point.pointerEvents,'none','Pointer events disabled: '+selector);
+  await cdp('Input.dispatchMouseEvent',{type:'mouseMoved',x:point.x,y:point.y});
+  await cdp('Input.dispatchMouseEvent',{type:'mousePressed',x:point.x,y:point.y,button:'left',clickCount:1});
+  await cdp('Input.dispatchMouseEvent',{type:'mouseReleased',x:point.x,y:point.y,button:'left',clickCount:1});
+  return point;
+}
 try{
   let targets;
   for(let i=0;i<100;i++){try{targets=await(await fetch('http://127.0.0.1:9222/json')).json();if(targets.length)break;}catch{}await pause(150);}
@@ -59,6 +71,20 @@ try{
     await evaluate('document.querySelectorAll(".tab-btn")[0].click()');assert(await evaluate('document.getElementById("case-russia").classList.contains("active")'));
     await evaluate('toggleShortcutsModal()');await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape'});assert(!await evaluate('document.getElementById("shortcutsModal").classList.contains("active")'));
   });
+  await check('V3 modal focus, inactive slides and native keyboard buttons',async()=>{
+    await evaluate('goToSlide(0);document.getElementById("shortcutsTrigger").focus();document.getElementById("shortcutsTrigger").click()');
+    assert.equal(await evaluate('document.activeElement.id'),'shortcutsClose');
+    await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'Tab',code:'Tab',windowsVirtualKeyCode:9});
+    assert.equal(await evaluate('document.activeElement.id'),'shortcutsClose');
+    await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape'});
+    assert.equal(await evaluate('document.activeElement.id'),'shortcutsTrigger');
+    assert.equal(await evaluate('document.querySelectorAll("section.slide[inert]").length'),9);
+    await evaluate('document.getElementById("btnNext").focus()');
+    await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:' ',code:'Space',windowsVirtualKeyCode:32});
+    await cdp('Input.dispatchKeyEvent',{type:'keyUp',key:' ',code:'Space',windowsVirtualKeyCode:32});
+    assert.equal(await evaluate('currentSlide'),1,'Space on Next must advance exactly once');
+    await evaluate('document.activeElement.blur()');
+  });
   await check('fullscreen enters and exits with a user gesture',async()=>{
     await cdp('Runtime.evaluate',{expression:'toggleFullScreen()',userGesture:true});await pause(300);
     assert(await evaluate('!!document.fullscreenElement'));
@@ -75,11 +101,26 @@ try{
     const before=await evaluate('document.getElementById("resFlightCost").textContent');
     await evaluate('document.getElementById("inputFuelPrice").value="3.8";document.getElementById("inputFuelPrice").dispatchEvent(new Event("input"))');assert.notEqual(await evaluate('document.getElementById("resFlightCost").textContent'),before);
   });
+  await check('V3 cost decomposition, route-hour shortcut and reset preserve model',async()=>{
+    const parseMoney=text=>Number(text.replace(/[^0-9.]/g,''));
+    for(const hours of [.5,5])for(const price of [1.5,4.5]){
+      await evaluate(`document.getElementById('inputExtraHours').value='${hours}';document.getElementById('inputFuelPrice').value='${price}';recalcCostSimulator()`);
+      const expectedFuel=hours*7500/.8/3.785411784*price,expectedOther=hours*2200;
+      assert.equal(parseMoney(await evaluate('document.getElementById("fuelCostValue").textContent')),Math.round(expectedFuel));
+      assert.equal(parseMoney(await evaluate('document.getElementById("otherCostValue").textContent')),expectedOther);
+      assert.equal(parseMoney(await evaluate('document.getElementById("resFlightCost").textContent')),Math.round(expectedFuel+expectedOther));
+      assert(Math.abs(await evaluate('parseFloat(document.getElementById("fuelCostBar").style.width)+parseFloat(document.getElementById("otherCostBar").style.width)')-100)<.01);
+    }
+    await evaluate('chooseGlobeRoute("hel-icn");useSelectedRouteHours()');assert.equal(await evaluate('document.getElementById("inputExtraHours").value'),'4.7');
+    await evaluate('resetCostInputs()');assert.equal(await evaluate('document.getElementById("inputExtraHours").value'),'3.2');assert.equal(await evaluate('document.getElementById("inputFuelPrice").value'),'2.8');
+  });
   await check('2 scenarios × 4 strategies × 3 prices; suspension punctuality N/A',async()=>{
     const costs=[];
     for(const scenario of ['siberia','mideast'])for(let strategy=0;strategy<4;strategy++)for(const price of ['moderate','high','spike']){
       await evaluate(`goToSlide(8);document.getElementById('simScenarioSelect').value='${scenario}';document.getElementById('simOilPrice').value='${price}';document.querySelectorAll('.sim-option-card')[${strategy}].click()`);
       assert(!await evaluate('/NaN|undefined/.test(document.getElementById("simDebriefText").textContent)'));
+      assert.equal(await evaluate('document.querySelectorAll("#strategyComparison tr").length'),4);
+      assert.equal(await evaluate('document.querySelector("#strategyComparison tr[aria-current=true] td:nth-child(2)").textContent'),await evaluate('document.getElementById("simStatCost").textContent'));
       if(strategy===2)assert.equal(await evaluate('document.getElementById("simStatReliability").textContent'),'N/A');
       if(strategy===0&&price==='high')costs.push(await evaluate('document.getElementById("simStatCost").textContent'));
     }assert.notEqual(costs[0],costs[1]);
@@ -107,6 +148,74 @@ try{
     const distance=await evaluate('camera.position.length()');await cdp('Input.dispatchMouseEvent',{type:'mouseWheel',x:point.x,y:point.y,deltaX:0,deltaY:200});await pause(200);assert.notEqual(await evaluate('camera.position.length()'),distance);
     await evaluate('resetGlobeCamera();toggleMapView()');assert(await evaluate('mapMode'));await screenshot('map-desktop.png');await evaluate('toggleMapView()');
   });
+  await check('V3 keyboard globe rotation and zoom',async()=>{
+    await evaluate('document.getElementById("globeCanvas").focus()');
+    const before=await evaluate('camera.position.toArray().join()');
+    await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'d',code:'KeyD'});assert.notEqual(await evaluate('camera.position.toArray().join()'),before);
+    const distance=await evaluate('camera.position.length()');await cdp('Input.dispatchKeyEvent',{type:'keyDown',key:'+',code:'Equal'});
+    assert(await evaluate('camera.position.length()')<distance);assert.equal(await evaluate('currentSlide'),5);
+    await evaluate('resetGlobeCamera();document.activeElement.blur()');
+  });
+  await check('missing OrbitControls disables all camera buttons with accessible 2D fallback',async()=>{
+    await cdp('Network.setBlockedURLs',{urls:['*OrbitControls.js']});await cdp('Page.reload');await pause(700);
+    await evaluate('goToSlide(5)');await pause(350);
+    const state=await evaluate('({mapMode,initialized:globeInitialized,controls:!!controls,buttons:[...document.querySelectorAll("[title=\\"Reset Camera View\\"],[aria-label=\\"Zoom in on globe\\"],[aria-label=\\"Zoom out on globe\\"]")].map(button=>({label:button.title||button.getAttribute("aria-label"),disabled:button.disabled})),message:document.getElementById("globeStatus").textContent})');
+    cameraChecks.push({missingOrbitControls:state});console.log('CAMERA FALLBACK',JSON.stringify(state));
+    assert(state.mapMode);assert(state.buttons.every(button=>button.disabled));assert.match(state.message,/3D|camera/i);
+    await cdp('Network.setBlockedURLs',{urls:[]});await cdp('Page.reload');await pause(700);await evaluate('goToSlide(5)');
+  });
+  await check('camera buttons respond to actual pointer clicks and reset rotation/zoom',async()=>{
+    if(await evaluate('spin'))await clickButton('#rotateGlobe');
+    for(const route of ['lhr-hnd','fra-sin','hel-icn']){
+      await evaluate(`chooseGlobeRoute('${route}')`);await pause(600);
+      const initial=await evaluate('({position:camera.position.toArray(),distance:camera.position.distanceTo(controls.target),mapMode,ready:globeInitialized&&!webglLost,controls:!!controls})');
+      await clickButton('[aria-label="Zoom in on globe"]');await pause(150);
+      const zoomIn=await evaluate('camera.position.distanceTo(controls.target)');
+      await clickButton('[aria-label="Zoom out on globe"]');await pause(150);
+      const zoomOut=await evaluate('camera.position.distanceTo(controls.target)');
+      await clickButton('[title="Reset Camera View"]');await pause(200);
+      const resetZoom=await evaluate('camera.position.distanceTo(controls.target)');
+      const point=await evaluate('(()=>{const r=document.getElementById("globeCanvas").getBoundingClientRect();return{x:r.left+r.width*.55,y:r.top+r.height*.5}})()');
+      await cdp('Input.dispatchMouseEvent',{type:'mousePressed',...point,button:'left',clickCount:1});
+      await cdp('Input.dispatchMouseEvent',{type:'mouseMoved',x:point.x+90,y:point.y+30,button:'left',buttons:1});
+      await cdp('Input.dispatchMouseEvent',{type:'mouseReleased',x:point.x+90,y:point.y+30,button:'left',clickCount:1});
+      const rotated=await evaluate('camera.position.toArray()');
+      await clickButton('[title="Reset Camera View"]');await pause(350);
+      const resetPosition=await evaluate('camera.position.toArray()');
+      const difference=(a,b)=>Math.hypot(...a.map((value,i)=>value-b[i]));
+      cameraChecks.push({route,initial,zoomIn,zoomOut,resetZoom,rotated,resetPosition,resetError:difference(initial.position,resetPosition)});
+      console.log('CAMERA',JSON.stringify(cameraChecks.at(-1)));
+      assert(zoomIn<initial.distance*.9,'+ must visibly zoom in');
+      assert(zoomOut>zoomIn*1.1,'- must visibly zoom out');
+      assert(Math.abs(resetZoom-initial.distance)<.02,'Reset must restore the default distance');
+      assert(difference(initial.position,rotated)>.5,'Pointer drag must rotate the camera before reset');
+      assert(difference(initial.position,resetPosition)<.02,'Reset must clear pending damping and restore the default position');
+    }
+  });
+  await check('2D mode disables all camera buttons and restores them in 3D',async()=>{
+    const before=await evaluate('camera.position.toArray()');
+    await clickButton('#mapToggle');assert(await evaluate('mapMode'));
+    assert(await evaluate('[...document.querySelectorAll("[data-globe-only]")].every(button=>button.disabled&&button.getAttribute("aria-describedby")==="globeStatus")'));
+    assert.match(await evaluate('document.getElementById("globeStatus").textContent'),/2D.*disabled/);
+    for(const selector of ['#resetGlobe','[aria-label="Zoom in on globe"]','[aria-label="Zoom out on globe"]'])await clickButton(selector);
+    assert.deepEqual(await evaluate('camera.position.toArray()'),before,'Disabled 2D controls must not move the hidden camera');
+    await clickButton('#mapToggle');assert(!await evaluate('mapMode'));assert(await evaluate('[...document.querySelectorAll("[data-globe-only]")].every(button=>!button.disabled)'));
+    await clickButton('[aria-label="Zoom in on globe"]');assert(await evaluate('camera.position.length()')<Math.hypot(...before));
+    await clickButton('#resetGlobe');
+  });
+  await check('V3 projector layouts and readable primary text',async()=>{
+    for(const [width,height] of [[1280,720],[1366,768],[1920,1080]]){
+      await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
+      for(let i=0;i<10;i++){
+        await evaluate(`goToSlide(${i});document.getElementById('slide-${i}').scrollTop=0`);await pause(120);
+        const metrics=await evaluate(`(()=>{const el=document.getElementById('slide-${i}');return {slide:${i+1},width:innerWidth,height:innerHeight,contentHeight:el.scrollHeight,availableHeight:el.clientHeight,overflowX:el.scrollWidth>el.clientWidth+1,bodyFont:parseFloat(getComputedStyle(document.body).fontSize)}})()`);
+        layout.push(metrics);assert(!metrics.overflowX);assert(metrics.bodyFont>=17);
+        if(width===1366){await pause(180);await screenshot(`v3-slide-${String(i+1).padStart(2,'0')}-projector.png`);}
+      }
+    }
+    const overflowing=layout.filter(item=>item.contentHeight>item.availableHeight+2);
+    assert.equal(overflowing.length,0,'Default projector slides require vertical scrolling: '+JSON.stringify(overflowing));
+  });
   await check('all slides at desktop and mobile widths without page overflow',async()=>{
     for(const [width,height] of [[1440,1000],[390,844]]){
       await cdp('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:false});
@@ -121,6 +230,12 @@ try{
     await cdp('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});await cdp('Page.reload');await pause(800);assert.equal(await evaluate('spin'),false);
   });
   await check('presentation requests no external runtime resources',async()=>{assert(!requests.some(u=>/^https?:/.test(u)&&!u.startsWith('http://127.0.0.1:8765/')));});
+  await check('V3 retained academic links and expandable conclusions',async()=>{
+    await evaluate('goToSlide(9);document.querySelector(".source-register").open=true');
+    assert.equal(await evaluate('document.querySelectorAll("#slide-9 .source-register a[href^=https]").length'),6);
+    assert.match(await evaluate('document.querySelector(".conclusion-callout").textContent'),/safety/);
+    await evaluate('document.querySelector(".source-register").open=false');
+  });
   await check('direct file preview works with local data and WebGL',async()=>{
     await cdp('Page.navigate',{url:'file:///'+root.replaceAll('\\','/')+'/index.html'});await pause(900);
     await evaluate('goToSlide(5)');await pause(500);assert(await evaluate('globeInitialized'));assert.equal(await evaluate('PRESENTATION_DATA.version'),2);
@@ -133,13 +248,38 @@ try{
   });
   // Restore assets, then verify the no-WebGL fallback independently.
   await cdp('Page.reload');await pause(700);
+  await check('V3 actual WebGL context loss preserves the 2D route comparison',async()=>{
+    await evaluate('goToSlide(5)');await pause(400);
+    await evaluate('renderer.getContext().getExtension("WEBGL_lose_context").loseContext()');await pause(400);
+    assert(await evaluate('mapMode && webglLost'));
+    assert(await evaluate('[...document.querySelectorAll("[data-globe-only]")].every(button=>button.disabled)'));
+    assert.match(await evaluate('document.getElementById("globeStatus").textContent'),/disabled/);
+    await evaluate('chooseGlobeRoute("fra-sin");toggleMapView()');assert(await evaluate('mapMode'));
+    assert.equal(await evaluate('selectedRoute'),'fra-sin');
+    await cdp('Page.reload');await pause(700);
+  });
+  await check('WebGL initialization failure disables camera controls and retains the 2D map',async()=>{
+    const {identifier}=await cdp('Page.addScriptToEvaluateOnNewDocument',{source:'const nativeContext=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return /^(webgl2?|experimental-webgl)$/i.test(type)?null:nativeContext.call(this,type,...args)};'});
+    await cdp('Page.reload');await pause(700);await evaluate('goToSlide(5)');await pause(350);
+    assert(await evaluate('mapMode&&!globeInitialized'));
+    assert(await evaluate('[...document.querySelectorAll("[data-globe-only]")].every(button=>button.disabled)'));
+    assert.match(await evaluate('document.getElementById("globeStatus").textContent'),/WebGL.*disabled/);
+    const before=await evaluate('camera.position.toArray()');
+    for(const selector of ['#resetGlobe','[aria-label="Zoom in on globe"]','[aria-label="Zoom out on globe"]'])await clickButton(selector);
+    assert.deepEqual(await evaluate('camera.position.toArray()'),before);
+    await evaluate('chooseGlobeRoute("fra-sin")');assert.equal(await evaluate('selectedRoute'),'fra-sin');
+    assert(await evaluate('document.getElementById("mapCanvas").width>0&&getComputedStyle(document.getElementById("mapCanvas")).display!=="none"'));
+    await cdp('Page.removeScriptToEvaluateOnNewDocument',{identifier});await cdp('Page.reload');await pause(700);
+  });
   await check('missing Three.js falls back to 2D with explanatory text',async()=>{
     await evaluate('window.THREE=undefined;goToSlide(5)');assert(await evaluate('mapMode'));assert.match(await evaluate('document.getElementById("globeStatus").textContent'),/unavailable/);
+    assert(await evaluate('[...document.querySelectorAll("[data-globe-only]")].every(button=>button.disabled)'));
+    await evaluate('useSelectedRouteHours()');assert(!await evaluate('/NaN/.test(document.getElementById("resFlightCost").textContent)'));
   });
   assert.deepEqual(errors,[],'Unexpected JavaScript exceptions');
 }catch(error){results.push({name:'failure',result:'failed',detail:String(error)});console.error(error);try{await screenshot('browser-failure.png');}catch{}process.exitCode=1;}
 finally{
-  const report=sanitizeReport({browser:basename(executable),mode:'headless; software WebGL (SwiftShader)',results,errors,requests:[...new Set(requests)]});
+  const report=sanitizeReport({browser:basename(executable),mode:'headless; software WebGL (SwiftShader)',results,errors,layout,cameraChecks,requests:[...new Set(requests)]});
   await writeFile(resolve(artifacts,'browser-results.json'),JSON.stringify(report,null,2)+'\n');
   if(socket?.readyState===WebSocket.OPEN){try{await cdp('Browser.close');}catch{}socket.close();}
   child.kill();server.close();
