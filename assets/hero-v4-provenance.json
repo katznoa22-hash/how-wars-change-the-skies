@@ -1,0 +1,12 @@
+{
+  "asset": "assets/hero-v4.jpg",
+  "type": "AI-generated artistic illustration",
+  "tool": "Codex with built-in OpenAI image generation",
+  "date": "2026-11-09",
+  "reference": "User description only; original selected reference image unavailable locally",
+  "prompt": "Create a text-free cinematic aviation illustration for a 16:9 academic presentation cover. Deep midnight navy atmospheric sky and clouds. A very large luminous realistic Earth dominates the right half, Europe, Africa and Middle East visible, geographically plausible land silhouettes; cool blue atmospheric rim, realistic restrained warm city lights and a few gently curved illuminated illustrative flight paths. One large unbranded commercial passenger jet at upper right, well integrated in cinematic lighting. A very small white aircraft silhouette with short dotted flight path in upper left. Keep entire left half dark quiet negative space for later HTML headline, do not place Earth or bright clouds across left text area. Very restrained localized coral glows in a few conflict context areas only, no precise borders, no labels, no data visualization. Premium editorial documentary realism, elegant balanced lighting, no decorative gold, no gold frames, no neon outlines, no gaming or dashboard aesthetic. Absolutely NO text, typography, letters, numbers, logos, buttons, watermark, or UI embedded in the image. Wide landscape 16:9 composition. This is explicitly an artistic illustration, not satellite imagery or verified flight tracks.",
+  "processing": "Generated PNG converted locally to JPEG quality 88, original dimensions retained (1672 × 941); no downloaded asset or package.",
+  "limits": "Not satellite evidence, verified routes, exact restriction boundaries, or a geopolitical map. All essential text and controls are HTML.",
+  "sha256": "ee090fe797975357c1f3779ff2de6d317f35627e0a72766f9f956a3031869bf9",
+  "bytes": 197684
+}

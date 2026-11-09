@@ -13,6 +13,9 @@ let cameraFailure = '';
 let airportLabels = [], geographicLabels = [], movingMarker, movingPoints = [], lastFrame = 0;
 let currentStrategy = 'reroute';
 const R = 12;
+// Shared CSS tokens keep 3D, 2D and HTML legends consistent. No model parameters here.
+const theme = getComputedStyle(document.documentElement);
+const visual = Object.freeze({baseline:theme.getPropertyValue('--route-baseline').trim(),detour:theme.getPropertyValue('--route-detour').trim()});
 const regionCodes = { russia: ['RUS','UKR'], mideast: ['IRN','IRQ','ISR','JOR','LBN'] };
 const countryNames = { RUS:'Russia', UKR:'Ukraine', IRN:'Iran', IRQ:'Iraq', ISR:'Israel', JOR:'Jordan', LBN:'Lebanon' };
 const countryCenters = {RUS:[95,61],UKR:[31,49],IRN:[54,32],IRQ:[44,33],ISR:[35,31],JOR:[37,29],LBN:[36,34]};
@@ -219,20 +222,20 @@ function renderScenarioRoutes(scenario) {
   if(!model) return;
   const r=model.routes[selectedRoute];
   put('hudScenarioName',r.scenario==='russia'?'Russia / Ukraine context':'Middle East · April 2024 context');
-  put('hudRoutePair',r.origin.code+' → '+r.destination.code+' · illustrative detour');
+  put('hudRoutePair',r.origin.code+' → '+r.destination.code);
   document.querySelectorAll('[data-scenario]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.scenario===r.scenario)));
   put('globeRouteDescription',routePoints(r).map(p=>p.code||p.name).join(' → '));
   if(globeInitialized) {
     disposeRoutes();earthMesh.material.map.dispose();earthMesh.material.map=earthTexture(r.scenario);
-    addRoute(sphericalPoints(r.origin,r.destination,.55),0x50e6ff,true);
+    addRoute(sphericalPoints(r.origin,r.destination,.55),visual.baseline,true);
     movingPoints=[];
     const waypoints=routePoints(r);
     for(let i=1;i<waypoints.length;i++) {
-      const pts=sphericalPoints(waypoints[i-1],waypoints[i],.28);addRoute(pts,0xffca65,false);movingPoints.push(...pts.slice(i===1?0:1));
+      const pts=sphericalPoints(waypoints[i-1],waypoints[i],.28);addRoute(pts,visual.detour,false);movingPoints.push(...pts.slice(i===1?0:1));
     }
     for(const p of waypoints) {
       const position=latLonToVector3(p.lat,p.lon,R+.12);
-      const marker=new THREE.Mesh(new THREE.SphereGeometry(p.code ? 0.12 : 0.065,12,8),new THREE.MeshBasicMaterial({color:p.code?0xffffff:0xffca65}));
+      const marker=new THREE.Mesh(new THREE.SphereGeometry(p.code ? 0.12 : 0.065,12,8),new THREE.MeshBasicMaterial({color:p.code?0xffffff:visual.detour}));
       marker.position.copy(position);routeGroup.add(marker);
       if(p.code) {
         const el=document.createElement('span');el.className='airport-label';el.textContent=p.code;el.title=p.name;
@@ -247,7 +250,7 @@ function renderScenarioRoutes(scenario) {
       document.getElementById('globeLabels').appendChild(el);
       geographicLabels.push({position:latLonToVector3(lat,lon,R+.08),el});
     }
-    movingMarker=new THREE.Mesh(new THREE.SphereGeometry(.1,12,8),new THREE.MeshBasicMaterial({color:0xfff2cb}));routeGroup.add(movingMarker);
+    movingMarker=new THREE.Mesh(new THREE.SphereGeometry(.1,12,8),new THREE.MeshBasicMaterial({color:0xf4f6f8}));routeGroup.add(movingMarker);
     resetGlobeCamera();
   }
   drawMap();
@@ -322,8 +325,8 @@ function drawMap(){
     if(angle<1e-8)return[a,b];
     return Array.from({length:101},(_,i)=>{const t=i/100,v=av.map((x,j)=>(x*Math.sin((1-t)*angle)+bv[j]*Math.sin(t*angle))/Math.sin(angle));return{lat:Math.atan2(v[2],Math.hypot(v[0],v[1]))/rad,lon:Math.atan2(v[1],v[0])/rad};});
   }
-  path(interpolate(r.origin,r.destination),'#50e6ff',true);
-  const pts=routePoints(r);for(let i=1;i<pts.length;i++)path(interpolate(pts[i-1],pts[i]),'#ffca65',false);
+  path(interpolate(r.origin,r.destination),visual.baseline,true);
+  const pts=routePoints(r);for(let i=1;i<pts.length;i++)path(interpolate(pts[i-1],pts[i]),visual.detour,false);
   ctx.font='bold 22px sans-serif';
   for(const p of [r.origin,r.destination]){const [x,y]=project(p);ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,y,6,0,Math.PI*2);ctx.fill();ctx.fillText(p.code,x+10,y-12);}
   ctx.font='18px sans-serif';ctx.fillStyle='#ffd7d4';
@@ -334,7 +337,7 @@ function animateGlobe(time){
   requestAnimationFrame(animateGlobe);
   if(!isGlobeRenderingActive||document.hidden||mapMode||time-lastFrame<1000/30)return;
   lastFrame=time;controls?.update();
-  if(movingMarker&&movingPoints.length)movingMarker.position.copy(movingPoints[reducedMotion.matches?0:Math.floor(time/45)%movingPoints.length]);
+  if(movingMarker&&movingPoints.length)movingMarker.position.copy(movingPoints[reducedMotion.matches||!spin?0:Math.floor(time/45)%movingPoints.length]);
   renderer.render(scene,camera);
   const box=renderer.domElement.getBoundingClientRect();
   const placed=[];
@@ -366,6 +369,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   });
   document.getElementById('rotateGlobe').setAttribute('aria-pressed',String(spin));put('rotateGlobe',spin?'Pause rotation':'Resume rotation');
   document.getElementById('globeCanvas').addEventListener('keydown',event=>{
+    if(event.ctrlKey||event.metaKey||event.altKey||event.isComposing)return;
     if(!camera||!controls||mapMode||webglLost)return;
     const key=event.key.toLowerCase();
     if(!['w','a','s','d','+','=','-'].includes(key))return;

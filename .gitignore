@@ -10,3 +10,11 @@ artifacts/*
 !artifacts/globe-mobile.png
 !artifacts/map-desktop.png
 !artifacts/v3-slide-??-projector.png
+
+# Version 4 evidence is separate from immutable Version 3 captures.
+!artifacts/v4/
+artifacts/v4/*
+!artifacts/v4/browser-results.json
+!artifacts/v4/v4-slide-??-projector.png
+!artifacts/v4/preview.html
+!artifacts/v4/pre-release-audit.md

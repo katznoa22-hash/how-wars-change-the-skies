@@ -1,0 +1,570 @@
+{
+  "browser": "chrome.exe",
+  "mode": "headless; software WebGL (SwiftShader)",
+  "results": [
+    {
+      "name": "10 slides and local model initialize",
+      "result": "passed"
+    },
+    {
+      "name": "all navigation dots, previous/next, keyboard and boundaries",
+      "result": "passed"
+    },
+    {
+      "name": "case study tabs and shortcut modal",
+      "result": "passed"
+    },
+    {
+      "name": "V4 modal focus, inactive slides and native keyboard buttons",
+      "result": "passed"
+    },
+    {
+      "name": "fullscreen enters and exits with a user gesture",
+      "result": "passed"
+    },
+    {
+      "name": "three routes agree with generated data and chart",
+      "result": "passed"
+    },
+    {
+      "name": "fuel and time sliders change cost, emissions use the same fuel mass",
+      "result": "passed"
+    },
+    {
+      "name": "V4 cost decomposition, route-hour shortcut and reset preserve model",
+      "result": "passed"
+    },
+    {
+      "name": "2 scenarios × 4 strategies × 3 prices; suspension punctuality N/A",
+      "result": "passed"
+    },
+    {
+      "name": "3D WebGL, texture, coordinates, route geometry and resource cleanup",
+      "result": "passed"
+    },
+    {
+      "name": "drag, zoom, reset and 2D map toggle",
+      "result": "passed"
+    },
+    {
+      "name": "V4 keyboard globe rotation and zoom",
+      "result": "passed"
+    },
+    {
+      "name": "V4 Start, case selected states and modifier-safe navigation",
+      "result": "passed"
+    },
+    {
+      "name": "V4 native touch/keyboard strategy selection and range keyboard input",
+      "result": "passed"
+    },
+    {
+      "name": "V4 semantic palette contrast, focus, targets and hero provenance",
+      "result": "passed"
+    },
+    {
+      "name": "missing OrbitControls disables all camera buttons with accessible 2D fallback",
+      "result": "passed"
+    },
+    {
+      "name": "camera buttons respond to actual pointer clicks and reset rotation/zoom",
+      "result": "passed"
+    },
+    {
+      "name": "2D mode disables all camera buttons and restores them in 3D",
+      "result": "passed"
+    },
+    {
+      "name": "V4 projector layouts and readable primary text",
+      "result": "passed"
+    },
+    {
+      "name": "all slides at desktop and mobile widths without page overflow",
+      "result": "passed"
+    },
+    {
+      "name": "V4 expanded disclosures remain reachable without horizontal clipping",
+      "result": "passed"
+    },
+    {
+      "name": "reduced motion pauses rotation by default after reload",
+      "result": "passed"
+    },
+    {
+      "name": "presentation requests no external runtime resources",
+      "result": "passed"
+    },
+    {
+      "name": "V4 retained academic links and expandable conclusions",
+      "result": "passed"
+    },
+    {
+      "name": "direct file preview works with local data and WebGL",
+      "result": "passed"
+    },
+    {
+      "name": "missing model reports a visible error and keeps navigation",
+      "result": "passed"
+    },
+    {
+      "name": "V4 actual WebGL context loss preserves the 2D route comparison",
+      "result": "passed"
+    },
+    {
+      "name": "WebGL initialization failure disables camera controls and retains the 2D map",
+      "result": "passed"
+    },
+    {
+      "name": "missing Three.js falls back to 2D with explanatory text",
+      "result": "passed"
+    }
+  ],
+  "errors": [],
+  "layout": [
+    {
+      "slide": 1,
+      "width": 1280,
+      "height": 720,
+      "contentHeight": 592,
+      "availableHeight": 592,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 2,
+      "width": 1280,
+      "height": 720,
+      "contentHeight": 592,
+      "availableHeight": 592,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 3,
+      "width": 1280,
+      "height": 720,
+      "contentHeight": 592,
+      "availableHeight": 592,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 4,
+      "width": 1280,
+      "height": 720,
+      "contentHeight": 592,
+      "availableHeight": 592,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 5,
+      "width": 1280,
+      "height": 720,
+      "contentHeight": 592,
+      "availableHeight": 592,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 6,
+      "width": 1280,
+      "height": 720,
+      "contentHeight": 592,
+      "availableHeight": 592,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 7,
+      "width": 1280,
+      "height": 720,
+      "contentHeight": 592,
+      "availableHeight": 592,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 8,
+      "width": 1280,
+      "height": 720,
+      "contentHeight": 592,
+      "availableHeight": 592,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 9,
+      "width": 1280,
+      "height": 720,
+      "contentHeight": 592,
+      "availableHeight": 592,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 10,
+      "width": 1280,
+      "height": 720,
+      "contentHeight": 592,
+      "availableHeight": 592,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 1,
+      "width": 1366,
+      "height": 768,
+      "contentHeight": 640,
+      "availableHeight": 640,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 2,
+      "width": 1366,
+      "height": 768,
+      "contentHeight": 640,
+      "availableHeight": 640,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 3,
+      "width": 1366,
+      "height": 768,
+      "contentHeight": 640,
+      "availableHeight": 640,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 4,
+      "width": 1366,
+      "height": 768,
+      "contentHeight": 640,
+      "availableHeight": 640,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 5,
+      "width": 1366,
+      "height": 768,
+      "contentHeight": 640,
+      "availableHeight": 640,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 6,
+      "width": 1366,
+      "height": 768,
+      "contentHeight": 640,
+      "availableHeight": 640,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 7,
+      "width": 1366,
+      "height": 768,
+      "contentHeight": 640,
+      "availableHeight": 640,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 8,
+      "width": 1366,
+      "height": 768,
+      "contentHeight": 640,
+      "availableHeight": 640,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 9,
+      "width": 1366,
+      "height": 768,
+      "contentHeight": 640,
+      "availableHeight": 640,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 10,
+      "width": 1366,
+      "height": 768,
+      "contentHeight": 640,
+      "availableHeight": 640,
+      "overflowX": false,
+      "bodyFont": 17
+    },
+    {
+      "slide": 1,
+      "width": 1920,
+      "height": 1080,
+      "contentHeight": 952,
+      "availableHeight": 952,
+      "overflowX": false,
+      "bodyFont": 18
+    },
+    {
+      "slide": 2,
+      "width": 1920,
+      "height": 1080,
+      "contentHeight": 952,
+      "availableHeight": 952,
+      "overflowX": false,
+      "bodyFont": 18
+    },
+    {
+      "slide": 3,
+      "width": 1920,
+      "height": 1080,
+      "contentHeight": 952,
+      "availableHeight": 952,
+      "overflowX": false,
+      "bodyFont": 18
+    },
+    {
+      "slide": 4,
+      "width": 1920,
+      "height": 1080,
+      "contentHeight": 952,
+      "availableHeight": 952,
+      "overflowX": false,
+      "bodyFont": 18
+    },
+    {
+      "slide": 5,
+      "width": 1920,
+      "height": 1080,
+      "contentHeight": 952,
+      "availableHeight": 952,
+      "overflowX": false,
+      "bodyFont": 18
+    },
+    {
+      "slide": 6,
+      "width": 1920,
+      "height": 1080,
+      "contentHeight": 952,
+      "availableHeight": 952,
+      "overflowX": false,
+      "bodyFont": 18
+    },
+    {
+      "slide": 7,
+      "width": 1920,
+      "height": 1080,
+      "contentHeight": 952,
+      "availableHeight": 952,
+      "overflowX": false,
+      "bodyFont": 18
+    },
+    {
+      "slide": 8,
+      "width": 1920,
+      "height": 1080,
+      "contentHeight": 952,
+      "availableHeight": 952,
+      "overflowX": false,
+      "bodyFont": 18
+    },
+    {
+      "slide": 9,
+      "width": 1920,
+      "height": 1080,
+      "contentHeight": 952,
+      "availableHeight": 952,
+      "overflowX": false,
+      "bodyFont": 18
+    },
+    {
+      "slide": 10,
+      "width": 1920,
+      "height": 1080,
+      "contentHeight": 952,
+      "availableHeight": 952,
+      "overflowX": false,
+      "bodyFont": 18
+    }
+  ],
+  "cameraChecks": [
+    {
+      "missingOrbitControls": {
+        "mapMode": true,
+        "initialized": false,
+        "controls": false,
+        "buttons": [
+          {
+            "label": "Reset Camera View",
+            "disabled": true
+          },
+          {
+            "label": "Zoom in on globe",
+            "disabled": true
+          },
+          {
+            "label": "Zoom out on globe",
+            "disabled": true
+          }
+        ],
+        "message": "3D camera controls are unavailable because the control library could not load. The 2D map still works; reload to retry 3D."
+      }
+    },
+    {
+      "route": "lhr-hnd",
+      "initial": {
+        "position": [
+          11.74517034364496,
+          25.915937682374942,
+          -25.18759908451024
+        ],
+        "distance": 37.99999999999999,
+        "mapMode": false,
+        "ready": true,
+        "controls": true
+      },
+      "zoomIn": 32.29999999999999,
+      "zoomOut": 37.14499999999999,
+      "resetZoom": 37.99999999999999,
+      "rotated": [
+        12.836857271079692,
+        26.398791569173987,
+        -24.131284654763746
+      ],
+      "resetPosition": [
+        11.74517034364496,
+        25.915937682374942,
+        -25.18759908451024
+      ],
+      "resetError": 0
+    },
+    {
+      "route": "fra-sin",
+      "initial": {
+        "position": [
+          23.40564288838233,
+          14.847782882592401,
+          -25.9945999094603
+        ],
+        "distance": 38,
+        "mapMode": false,
+        "ready": true,
+        "controls": true
+      },
+      "zoomIn": 32.29999999999999,
+      "zoomOut": 37.14499999999999,
+      "resetZoom": 38,
+      "rotated": [
+        25.550913605470175,
+        16.033792489269324,
+        -23.109918051279422
+      ],
+      "resetPosition": [
+        23.40564288838233,
+        14.847782882592401,
+        -25.9945999094603
+      ],
+      "resetError": 0
+    },
+    {
+      "route": "hel-icn",
+      "initial": {
+        "position": [
+          11.74517034364496,
+          25.915937682374942,
+          -25.18759908451024
+        ],
+        "distance": 37.99999999999999,
+        "mapMode": false,
+        "ready": true,
+        "controls": true
+      },
+      "zoomIn": 32.29999999999999,
+      "zoomOut": 37.14499999999999,
+      "resetZoom": 37.99999999999999,
+      "rotated": [
+        12.836857271079692,
+        26.398791569173987,
+        -24.131284654763746
+      ],
+      "resetPosition": [
+        11.74517034364496,
+        25.915937682374942,
+        -25.18759908451024
+      ],
+      "resetError": 0
+    }
+  ],
+  "consoleIssues": [
+    {
+      "check": "WebGL initialization failure disables camera controls and retains the 2D map",
+      "type": "error",
+      "text": "THREE.WebGLRenderer: Error creating WebGL context."
+    }
+  ],
+  "networkIssues": [
+    {
+      "check": "missing OrbitControls disables all camera buttons with accessible 2D fallback",
+      "error": "",
+      "blocked": "inspector"
+    },
+    {
+      "check": "missing model reports a visible error and keeps navigation",
+      "error": "",
+      "blocked": "inspector"
+    }
+  ],
+  "accessibility": [
+    {
+      "foreground": "--text-main",
+      "background": "--bg-deep",
+      "ratio": 17.479167716343415
+    },
+    {
+      "foreground": "--text-main",
+      "background": "--bg-card",
+      "ratio": 15.502287391511206
+    },
+    {
+      "foreground": "--text-muted",
+      "background": "--bg-deep",
+      "ratio": 11.164810369490276
+    },
+    {
+      "foreground": "--text-muted",
+      "background": "--bg-card",
+      "ratio": 9.902078967852052
+    },
+    {
+      "foreground": "--accent-cyan",
+      "background": "--bg-deep",
+      "ratio": 10.490209752359638
+    },
+    {
+      "foreground": "--accent-cyan",
+      "background": "--bg-card",
+      "ratio": 9.30377515779869
+    }
+  ],
+  "requests": [
+    "http://127.0.0.1:8765/",
+    "http://127.0.0.1:8765/assets/vendor/three.min.js",
+    "http://127.0.0.1:8765/assets/vendor/OrbitControls.js",
+    "http://127.0.0.1:8765/assets/v4.css",
+    "http://127.0.0.1:8765/data/presentation-data.js",
+    "http://127.0.0.1:8765/assets/v2.js",
+    "http://127.0.0.1:8765/assets/hero-v4.jpg",
+    "<project>/index.html",
+    "<project>/assets/vendor/three.min.js",
+    "<project>/assets/vendor/OrbitControls.js",
+    "<project>/assets/v4.css",
+    "<project>/data/presentation-data.js",
+    "<project>/assets/v2.js",
+    "<project>/assets/hero-v4.jpg"
+  ]
+}

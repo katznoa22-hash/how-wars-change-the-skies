@@ -630,3 +630,27 @@ How Wars Change the Skies aims to transform a complex geopolitical and economic 
 By combining visual storytelling, 3D interaction, reproducible Python analysis, and managerial decision-making, the project will demonstrate how AI-assisted development can support both technical creativity and critical thinking.
 
 End of PRD — Version 1.0
+
+
+---
+## Version 4 as-built addendum — 9 November 2026
+
+The initial draft above is preserved as historical planning, not an invented instructor rubric. This addendum records the actual submission candidate developed with Codex. Release status: local version-4 branch; manual review and publication approval pending. The user's cinematic navy/pearl/cyan directive supersedes the earlier V4 gold proposal recorded in prompts/codex-development-v4.md.
+
+| Slide | Implemented scope |
+| --- | --- |
+| 1 | Text-free generated cinematic Earth/aircraft artwork; real HTML title, exact subtitle and native Start button; labelled modeled hero figures and illustrative-image disclosure. |
+| 2 | Three explanatory panels: great-circle reference, sovereign airspace and FIRs; legal citation and causal chain. This is not an interactive global network explorer. |
+| 3 | Four operational steps, baseline/illustrative-detour comparison and dated EASA reference. No live closure simulation or status feed. |
+| 4 | Two keyboard-accessible case buttons with programmatic selected state; operator-specific Finnair example and dated April 2024 event. No invented timeline. |
+| 5 | Three reproducible hypothetical waypoint routes, zero-origin comparison bars, four metrics, units/formulas and globe synchronization. |
+| 6 | Functional 3D globe with country context, three routes, airport labels, reset/zoom/drag/keyboard/pause; shared-data 2D fallback and disabled-control explanations. |
+| 7 | Native fuel/hour sliders, route-hour transfer/reset, component cost chart, annual identical-sector assumption and direct CO2, with formulas/exclusions. |
+| 8 | Four managerial-interpretation briefing cards; safety/legal prerequisites. No claim of interactive priority weighting. |
+| 9 | Two scenarios, four responses and three prices (48 combinations), modeled incremental costs, invented scores, explanatory feedback and expandable comparison/assumptions. |
+| 10 | Synthesis and three recommendations, source register, limitations, credits and Return to Start. |
+
+Constraints retained: exactly ten ordered English slides; existing validated data/model assumptions/citations; no new runtime dependency or network requirement; visible keyboard focus, inert inactive slides, reduced motion and responsive scrolling. Larger targets and captions are prioritized over decoration. Sources and models have different evidence status; invented simulator scores do not establish safety, legality or profitability. Final acceptance requires the actual executed checks and manual review described in the V4 log, not merely this scope table.
+
+
+Pre-release verification addendum: the original nine Python checks were rerun successfully, then narrowly strengthened to 12 checks (nine model, three Git-history) for numerical reproducibility across float summation implementations. Only derived-number test comparisons use explicit absolute tolerances; validated data, inputs and formulas remain unchanged. Source-only ZIP reviewers must use the explicit ModelChecks command in README and cannot verify release history without .git. Browser regression remains 29 groups / 48 simulator combinations / 30 projector layouts. Physical projection, assistive technology and a second platform remain manual limitations. Exact independent ZIP-error reconciliation is pending the reviewer's traceback/environment; no definitive cross-platform diagnosis is asserted.
