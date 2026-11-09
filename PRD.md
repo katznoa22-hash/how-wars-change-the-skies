@@ -635,7 +635,7 @@ End of PRD — Version 1.0
 ---
 ## Version 4 as-built addendum — 9 November 2026
 
-The initial draft above is preserved as historical planning, not an invented instructor rubric. This addendum records the actual submission candidate developed with Codex. Release status: local version-4 branch; manual review and publication approval pending. The user's cinematic navy/pearl/cyan directive supersedes the earlier V4 gold proposal recorded in prompts/codex-development-v4.md.
+The initial draft above is preserved as historical planning, not an invented instructor rubric. This addendum records the actual submission candidate developed with Codex. Current release status (post-publication documentation update, 9 November 2026): Version 4 was successfully published to GitHub main at 4e73a2a528395aa939251579dfd51ca6e8089a86; version-4 remains the local working branch. Historical pre-release approval checkpoints are preserved in the development log. The user's cinematic navy/pearl/cyan directive supersedes the earlier V4 gold proposal recorded in prompts/codex-development-v4.md.
 
 | Slide | Implemented scope |
 | --- | --- |
@@ -654,3 +654,6 @@ Constraints retained: exactly ten ordered English slides; existing validated dat
 
 
 Pre-release verification addendum: the original nine Python checks were rerun successfully, then narrowly strengthened to 12 checks (nine model, three Git-history) for numerical reproducibility across float summation implementations. Only derived-number test comparisons use explicit absolute tolerances; validated data, inputs and formulas remain unchanged. Source-only ZIP reviewers must use the explicit ModelChecks command in README and cannot verify release history without .git. Browser regression remains 29 groups / 48 simulator combinations / 30 projector layouts. Physical projection, assistive technology and a second platform remain manual limitations. Exact independent ZIP-error reconciliation is pending the reviewer's traceback/environment; no definitive cross-platform diagnosis is asserted.
+
+
+Post-publication documentation note — 9 November 2026: the [AI-development evidence index](prompts/ai-development-audit.md) links recorded prompts, retrospective analysis and user-led decisions, and contains the verified publication closeout. The original draft above and all historical prompt records are preserved. The GitHub tree-verification assertion issue was resolved by comparing the correct Git object identifiers and file maps; it was not a publication failure. This is separate from the independent external floating-point report, whose exact cause remains unconfirmed. No live Python backend is required by the architecture specified in this PRD, and no application, numerical model, data, test or screenshot change is part of this documentation follow-up.

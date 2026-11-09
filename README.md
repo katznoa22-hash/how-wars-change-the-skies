@@ -1,6 +1,16 @@
-# How Wars Change the Skies — Version 4 submission candidate
+# How Wars Change the Skies — Version 4 University Submission
 
 An English, 10-slide educational presentation about conflict, airspace restrictions, illustrative rerouting and airline decisions. Version 2 improves geographic accuracy, data transparency and visual design while preserving navigation, case-study tabs, route selectors, globe controls, sliders and all four simulator strategies.
+
+**Published application release:** [Version 4 — `4e73a2a528395aa939251579dfd51ca6e8089a86`](https://github.com/katznoa22-hash/how-wars-change-the-skies/commit/4e73a2a528395aa939251579dfd51ca6e8089a86), successfully published to the public repository's `main` branch. The original V1–V3 history and V2/V3 tags are preserved. The release snapshot has 64 repository files and exactly 25 changed files relative to V3; these counts describe that immutable release, not a later documentation update.
+
+## Evaluator guide
+
+- **Run the presentation:** [local preview instructions](#preview-locally) and [HTML presentation source](index.html). GitHub displays source files; a hosted presentation URL is not claimed.
+- **Inspect the analytical work:** [Python analysis](analysis.py), [airport validation](scripts/validate_airports.py), [generated data](data/scenarios.json) and [formulas, evidence and limitations](SOURCES.md).
+- **Review verification:** [test instructions](#reproduce-calculations-and-run-checks), [Python checks](tests/model_checks.py), [browser checks](tests/browser.mjs) and [recorded browser report](artifacts/v4/browser-results.json).
+- **Assess the development process:** [AI-development evidence index and publication closeout](prompts/ai-development-audit.md), [PRD and as-built scope](PRD.md) and [chronological V4 log](prompts/codex-development-v4.md).
+- **See the actual slides:** [screenshots](#screenshots) and [all ten captures](artifacts/v4/preview.html). Open the HTML gallery locally; direct PNG links also work in GitHub.
 
 ## Development journey and review evidence
 
@@ -9,7 +19,7 @@ An English, 10-slide educational presentation about conflict, airspace restricti
 | **V1 — concept and scope** | English, ten-slide academic presentation centered on a 3D globe and airline decision exercise. Initial implementation already included interactive features; the Python model was still a planned requirement. | [Original ChatGPT prompt and response summary](prompts/01-chatgpt-conversation.md), [planning summary](prompts/01-planning.md), [Antigravity development record](prompts/antigravity-development.md). |
 | **V2 — reliable interaction and analysis** | Preserve the presentation while improving globe geography, three illustrative route comparisons, reproducible quantitative analysis and scenario-dependent simulator behavior. Distinguish sourced facts, assumptions and invented scores. | [Codex stage prompts/actions](prompts/codex-stage-record.md), [source/model audit](SOURCES.md). |
 | **V3 — usability and repair** | Improve projector readability and keyboard/fallback behavior. User-reported non-responsive camera buttons led to native pointer/camera tests and targeted availability/reset fixes. | [V3 prompts, repair and release record](prompts/codex-development-v3.md). |
-| **V4 — final cinematic candidate** | User-selected cinematic aviation composition; explicit rejection of gold-heavy alternatives in favor of navy/white/blue/cyan. Independent pre-release scrutiny led to bounded numerical comparison tests and clear ZIP/Git validation. Manual release approval remains required. | [V4 exact prompts and labelled summaries](prompts/codex-development-v4.md), [pre-release checklist](artifacts/v4/pre-release-audit.md). |
+| **V4 — published final presentation** | User-selected cinematic aviation composition; explicit rejection of gold-heavy alternatives in favor of navy/white/blue/cyan. Independent pre-release scrutiny led to bounded numerical comparison tests and clear ZIP/Git validation. Publication was explicitly approved and verified. | [V4 exact prompts and labelled summaries](prompts/codex-development-v4.md), [pre-release checklist](artifacts/v4/pre-release-audit.md). |
 
 Evidence labels matter: the ChatGPT conversation file contains one recorded original user prompt and a response summary; the planning file is explicitly a summary. Later logs distinguish exact user prompts from action summaries. The original selected reference bitmap and full earlier image-selection exchange were unavailable; V4 follows the user's detailed description and explicit design reversal, with no invented verbatim historical dialogue.
 
@@ -19,7 +29,7 @@ Evidence labels matter: the ChatGPT conversation file contains one recorded orig
 
 Version 3 previously refined that presentation on the preserved `version-3` branch: larger, high-contrast projector typography; focused keyboard navigation; globe controls and legends outside the map; keyboard globe rotation/zoom; a fuel/other-operations expense breakdown; a four-response simulator comparison; and clearer final conclusions with expandable academic sources. The presentation still has exactly ten slides. Validated Version 2 model assumptions, data, source links and local dependencies are unchanged. The existing `assets/v2.js` continues to hold the shared model/rendering functions; the name does not indicate a separate presentation or a changed scientific model.
 
-Version 2 is preserved at annotated tag `v2.0`, commit `1dd228500b5ba5708412495f1c43704468728b75`. Version 3 is identified by annotated tag `v3.0` and is a review release. **Version 4, not Version 3, will be the final submission version.** Version 4 is implemented locally on `version-4` as a submission candidate; manual review and release approval remain required. No Version 4 release tag or publication is implied. The exact Version 3 prompts, phases, camera-control repair, executed results, release procedure and limitations are recorded in [prompts/codex-development-v3.md](prompts/codex-development-v3.md).
+Version 2 is preserved at annotated tag `v2.0`, commit `1dd228500b5ba5708412495f1c43704468728b75`. Version 3 remains at annotated `v3.0`, commit `ef15a06038502f249bd702255401e1f09dc738ee`. Version 4 was published to `origin/main` as `4e73a2a528395aa939251579dfd51ca6e8089a86`; the local working branch is `version-4`. No V4 tag was created. [The V3 log](prompts/codex-development-v3.md) preserves its original prompts and repair/release preparation. [The evidence index](prompts/ai-development-audit.md#publication-closeout) records the verified V4 publication and the corrected verification-script assertion. Historical pre-release statements below and in dated audit records describe their original checkpoints, not the current publication status.
 
 ## Preview locally
 
@@ -45,16 +55,25 @@ On slide 7, use the selected route's extra hours (explicitly rounded to the exis
 - Simulator scenario selection changes outcomes. Suspension punctuality is N/A, and all strategies disclose assumptions without claiming safety or profitability.
 - Local libraries remove CDN dependence. Responsive layouts, keyboard focus, keyboard-operable strategy cards, accessible dot buttons and reduced-motion defaults improve presentation access.
 
+## Screenshots
+
+These are actual 1366×768 captures from the recorded V4 browser run, not a claim of physical projector testing or every interaction state. The cover contains AI-generated illustrative artwork; the globe capture shows the functional Three.js view. No screenshot was changed for this documentation update.
+
+![Slide 1: cinematic aviation cover with selectable HTML title and Start control](artifacts/v4/v4-slide-01-projector.png)
+
+![Slide 6: working Three.js globe, route legend and camera controls](artifacts/v4/v4-slide-06-projector.png)
+
+[All ten slide captures](artifacts/v4/preview.html) · [Generated hero-image provenance](assets/hero-v4-provenance.json)
+
 ## Reproduce calculations and run checks
 
-Version 4 preview: [all ten projector screenshots](artifacts/v4/preview.html) and [fresh browser report](artifacts/v4/browser-results.json). Earlier Version 3 evidence remains in artifacts/ unchanged.
+Version 4 preview: [all ten projector screenshots](artifacts/v4/preview.html) and [recorded V4 browser report](artifacts/v4/browser-results.json). Earlier Version 3 evidence remains in artifacts/ unchanged.
 
 Python uses only its standard library. Downloaded assets and generated data are already included.
 
 ```powershell
-py scripts/validate_airports.py
-py analysis.py
-py -m unittest discover -s tests -p '*checks.py'
+py -B scripts/validate_airports.py
+py -I -B -m unittest discover -s tests -p '*checks.py'
 node --check assets/v2.js
 node --check tests/browser.mjs
 node tests/browser.mjs
@@ -86,14 +105,16 @@ The scientific model still has schema version 2 and remains in the existing shar
 
 See [the complete V4 prompt, development and validation log](prompts/codex-development-v4.md). Tests now protect the immutable v3.0 tag and compare validated inputs/assets to that release. Use a full-history clone with tags for preservation tests. The browser suite checks independent simulator expenses/scores, native pointer camera changes, touch/keyboard operation, modifier-safe shortcuts, fallback faults, disclosure reflow and solid-token contrast. Automated contrast checks are not a screen-reader audit or a claim of full WCAG compliance. Software WebGL screenshots do not establish physical projector or hardware GPU quality.
 
-Version 1: 9a9ce56dfe23dc5f06a501c3e7582c605c540362. Version 2: v2.0 / 1dd228500b5ba5708412495f1c43704468728b75. Version 3: v3.0 / ef15a06038502f249bd702255401e1f09dc738ee. Version 4 remains uncommitted until the user reviews and approves it.
+Version 1: 9a9ce56dfe23dc5f06a501c3e7582c605c540362. Version 2: v2.0 / 1dd228500b5ba5708412495f1c43704468728b75. Version 3: v3.0 / ef15a06038502f249bd702255401e1f09dc738ee. Version 4: published commit `4e73a2a528395aa939251579dfd51ca6e8089a86`. Preserve this application release when making later documentation-only changes.
 
-### Executed candidate validation — 9 November 2026
+### Historical pre-release candidate validation — 9 November 2026
 
 `py -B scripts/validate_airports.py`: six airports passed. `py -B -m unittest discover -s tests -p '*checks.py'`: 9 tests passed. `node --check assets/v2.js`, `node --check tests/browser.mjs` and extracted inline JavaScript checks passed. `node tests/browser.mjs`: 29 groups passed, including 48 independently checked simulator combinations and 30 projector cases. Four pinned asset hashes and ten-slide order were verified. The report preserves deliberate WebGL/missing-resource fault diagnostics; no uncaught exceptions or unexpected normal-mode asset/console errors were observed. See the V4 log for failed intermediate runs, fixes, source-access limitations and manual validation still required. This is a local candidate awaiting user review, not a published final release.
 
 
-### Pre-release audit and source-ZIP validation
+### Historical pre-release audit and source-ZIP validation
+
+The following paragraphs retain the pre-publication validation record. Their pending-approval wording describes that checkpoint; publication was subsequently approved and verified as documented in the [closeout](prompts/ai-development-audit.md#publication-closeout). The independent external floating-point observation remains unresolved.
 
 The original nine tests passed again in the original Windows/Python 3.13.2 Git tree before changes. A narrowly scoped test fix now compares only the eight derived numeric route fields within explicit absolute floating-point budgets, retaining exact input/assumption/schema comparisons and unchanged Git-protected data/formulas. Three regression tests cover last-bit/sequential-sum variation, out-of-budget/non-finite values and altered inputs/structure. The full suite now contains **12 tests: nine model tests and three Git-history tests**. Earlier nine-test results above are historical executed runs, not the current total.
 

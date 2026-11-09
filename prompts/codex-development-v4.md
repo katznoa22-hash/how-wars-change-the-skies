@@ -6,7 +6,7 @@
 
 **Scope at initiation (historical):** Phase 1 — safe preparation and audit only. Implementation, commits, tags, pushes and dependency installation require later authorization. Version 4 is intended to become the final submission version; this audit is not a claim that final acceptance has been achieved.
 
-**Current status:** Local Version 4 release candidate on version-4, awaiting explicit approval before staging/commit/tag/push. Implementation and audits are recorded chronologically below. The independent external floating-point failure remains unconfirmed; native and fresh ZIP-extraction model checks pass. This status does not supersede preserved historical prompts or claim publication.
+**Current status:** Version 4 application release 4e73a2a528395aa939251579dfd51ca6e8089a86 is published on public GitHub main. The local branch is version-4. The user has explicitly approved a separate five-file documentation commit and normal branch-only push. Original application release/history/tags remain protected. Actual documentation commit identity and post-push outcome are established by Git metadata and final remote verification, not predicted here. The external floating-point observation remains unconfirmed.
 
 ## Exact initiating prompt
 
@@ -944,3 +944,200 @@ Respond in English only.
 AI tool: Codex. Verified version-4 at ef15a06038502f249bd702255401e1f09dc738ee, an empty Git index and the exact 25-file approved candidate list matching all tracked changes and non-ignored untracked files. Verified V1 ancestry and immutable v2.0/v3.0 tag objects/targets. Direct git ls-remote showed origin/main still at ef15a06038502f249bd702255401e1f09dc738ee, with unchanged V2/V3 tags. Origin is https://github.com/katznoa22-hash/how-wars-change-the-skies.git; the preceding safety audit confirmed public visibility and main as default branch. No unexpected conflict or remote movement was found.
 
 This record is written before staging/committing. Next authorized actions are: stage only the reviewed 25 paths (including this log), verify exact staged names and whitespace, create one commit titled Version 4 - Final University Submission, recheck remote main, perform a normal non-force branch-only push to origin/main with automatic tag following disabled, then verify the remote commit/tree and clean local status. No new tag, history rewrite or branch deletion is requested. Actual commit identity and post-push results will be reported from Git/GitHub after execution, not fabricated in this pre-commit record. Prior test results and unresolved external floating-point/source-access/manual-review limitations remain preserved above. No design, functionality, formula or dataset change is part of publication.
+
+## Post-publication documentation finalization
+
+Date: 9 November 2026. AI tool: Codex. This appendix is a retrospective closeout plus the newly authorized documentation work, not a claim that post-push results were recorded before the release. Specific user prompts below are copied from the conversation available in this session; they are not a complete platform export or a reconstruction of missing dialogue. Original prompt blocks and prior entries above remain unchanged. Only the current-status front matter was corrected; its superseded wording is preserved here as historical status, not a user prompt:
+
+> **Current status:** Local Version 4 release candidate on version-4, awaiting explicit approval before staging/commit/tag/push. Implementation and audits are recorded chronologically below. The independent external floating-point failure remains unconfirmed; native and fresh ZIP-extraction model checks pass. This status does not supersede preserved historical prompts or claim publication.
+
+### Recorded user approval for the read-only publication investigation
+
+```text
+Yes, I approve a read-only investigation of the post-publication file-tree verification discrepancy.
+
+Please:
+1. Identify the exact assertion that failed and explain why.
+2. Compare the local Version 4 commit and file tree against GitHub's main branch.
+3. Verify that all 25 approved changes were published correctly.
+4. Confirm that the README, PRD, Python files, Three.js assets, screenshots, and prompt documentation are available.
+5. Confirm that the repository remains public and that V1–V3 history is preserved.
+6. Report whether the discrepancy is a verification-script issue or an actual publication problem.
+
+Do not modify any files, create commits, push, or change Git history.
+
+Respond in English only, with a clear PASS/FAIL summary.
+```
+
+### Retrospective publication closeout — verified evidence
+
+Version 4 was committed as 4e73a2a528395aa939251579dfd51ca6e8089a86 (Version 4 - Final University Submission) and successfully published through a normal non-force branch-only update to origin/main. Its parent is the V3 release ef15a06038502f249bd702255401e1f09dc738ee. V1/V2 remain ancestors; annotated v2.0/v3.0 objects and targets are unchanged. No V4 tag was created. The publication approval/preflight above was written before the commit; this later closeout supplies the actual outcome.
+
+The original verification assertion compared the top-level sha from a tree response requested through main with git rev-parse HEAD^{tree}. In the observed ref-based response, that top-level value was commit SHA 4e73a2a528395aa939251579dfd51ca6e8089a86, whereas the actual tree SHA is b55274ba1efbba6658d9bd57e087b65b6136d9c1. The initial assertion failure was not proof of a publication problem and was not established to be a cache issue. After user-approved read-only investigation, the corrected method read commit.tree.sha, queried that exact tree SHA, checked non-truncation and compared complete path/mode/blob-SHA maps. All 64 release files matched, with no extra, missing or differing files; exactly the approved 25 paths changed relative to V3. Required README/PRD/Python/Three.js/screenshots/prompts were explicitly present. GitHub main and public visibility were confirmed. See the [publication evidence index](ai-development-audit.md#publication-closeout).
+
+Those Git/API facts were independently rechecked before editing this documentation follow-up on 9 November 2026: main still pointed to the release, the public GitHub tree matched local Git for all 64 files, ancestry/tags matched and the initial working tree/index were clean. The 64-file/25-change counts describe the immutable application release, not the later documentation working tree. This verified publication issue is resolved; the separate external floating-point report remains unconfirmed and was not declared fixed.
+
+### Exact documentation-finalization directive
+
+```text
+Thank you for the strict evidence-based assessment.
+
+I approve a narrowly scoped, documentation-only finalization of Version 4, with the goal of maximizing university evaluation quality, accuracy, transparency, and traceability.
+
+Please implement the following improvements:
+
+**1. Correct outdated publication-status statements**
+
+- Update current-status wording in README.md, PRD.md, and relevant V4 documentation.
+- Clearly state that Version 4 was successfully published to GitHub main.
+- Preserve historical pre-release statements as historical records, without rewriting their original meaning.
+- Use the verified release commit: `4e73a2a528395aa939251579dfd51ca6e8089a86`.
+
+**2. Add a verified post-publication closeout**
+
+- Document the successful publication, final commit, branch, and verification results.
+- Explain the original GitHub tree-verification assertion failure and its corrected verification.
+- Clearly distinguish the verification-script issue from an actual publication failure.
+- Record that all 64 repository files matched by path, mode, and blob hash, and that exactly 25 approved files were included in the V4 release.
+- Preserve the V1–V3 history and V2/V3 tags.
+
+**3. Improve AI-development documentation**
+
+- Create a concise, professional evidence index covering the documented development stages.
+- Link major prompts, implementation decisions, corrections, testing evidence, and results to their existing source records.
+- Clearly distinguish original prompts, recorded responses, summaries, and retrospective analysis.
+- Never invent missing conversations, assistant responses, dates, decisions, or evidence.
+- Identify missing original records transparently.
+
+**4. Strengthen evidence of student decision-making**
+
+- Connect important design decisions to actual recorded prompts and implementation evidence.
+- Highlight scope control, numerical validation, visual-design decisions, testing, and iterative improvement.
+- Avoid unsupported claims about personal contributions or motivations.
+
+**5. Improve evaluator-facing readability**
+
+- Make the README easy to navigate for a university evaluator.
+- Provide concise links to the presentation, Python analysis, tests, screenshots, and AI-development evidence.
+- Embed existing screenshots only if they materially improve clarity.
+- Preserve the distinction between historical tests and current verification.
+
+**6. Preserve scientific accuracy**
+
+- Keep existing numerical limitations and unresolved external floating-point observations accurately described.
+- Do not claim that unresolved issues were conclusively fixed.
+- Do not add live Python execution, a backend, or unnecessary new functionality.
+
+**Strict safety constraints**
+
+- Do not modify application functionality, formulas, datasets, JavaScript, Python, tests, or screenshots.
+- Do not rewrite Git history, amend the published V4 commit, reset branches, delete tags, or force-push.
+- Preserve all original historical prompt records.
+- Make only justified documentation changes.
+- Before editing, show the exact proposed file list and a concise change plan.
+- After editing, run appropriate documentation and Git integrity checks.
+- Present a final diff summary and verification results.
+- Do not commit or push anything until I explicitly approve the final changes.
+
+Please begin with the proposed file list and change plan, then wait for approval.
+
+Respond in English only.
+```
+
+### Proposed scope and approval boundary (action summary)
+
+Codex proposed exactly README.md, PRD.md, prompts/codex-development-v4.md, artifacts/v4/pre-release-audit.md and new prompts/ai-development-audit.md, then waited. The proposal was a plan, not an implementation or extra release approval. Existing screenshots would be referenced only, with no image modification. Current-status corrections would be separate from preserved historical findings.
+
+### Exact five-file scope approval
+
+```text
+I approve the proposed exact five-file documentation-only scope.
+
+Please proceed with the improvements as planned.
+
+Additional requirements:
+- Preserve original historical prompts and conversation records without rewriting them.
+- Clearly distinguish original evidence from retrospective summaries.
+- Ensure all new factual claims are supported by existing records or verified Git evidence.
+- Preserve the published V4 commit and all previous release history.
+- Do not modify application code, tests, datasets, formulas, or screenshots.
+- Validate all documentation links and references.
+- After completing the edits, provide the exact changed-file list, diff summary, verification results, and any remaining limitations.
+
+IMPORTANT: Do not commit or push yet. Stop after completing and verifying the local documentation changes, and wait for my explicit approval.
+
+Respond in English only.
+```
+
+### Documentation edits — actual actions
+
+- README.md now identifies published V4, adds evaluator navigation and direct analysis/test/evidence links, and embeds the existing cover and functional-globe captures to distinguish illustrative artwork from the real interactive feature. The default check block no longer includes optional data regeneration; the existing warning that analysis.py main rewrites outputs remains. Historical test counts remain labelled, not rewritten.
+- PRD.md preserves its original draft and updates only current as-built release status plus an appended post-publication documentation note.
+- prompts/codex-development-v4.md corrects current status and appends this exact-prompt/closeout record. Superseded status is preserved above; no original historical prompt or conversation record was edited.
+- artifacts/v4/pre-release-audit.md adds a historical-record notice and a post-publication note around the entire unchanged original audit body. Its original hold findings and 25-file candidate list are preserved as historical evidence.
+- New prompts/ai-development-audit.md provides a concise evidence taxonomy, stage/source map, user-decision register, Python architecture boundary, historical-validation register, verified publication closeout and explicit missing-record limitations. It is labelled retrospective analysis and does not claim complete raw conversation coverage or unsupported personal motives/authorship.
+
+No application, stylesheet, model, data, Python/JavaScript/test, screenshot, dependency or Git reference was changed. No live Python/backend was added. Scientific/source limitations and the unresolved exact external floating-point cause are retained. Validation results will be appended only after execution.
+
+### Documentation finalization verification
+
+Executed on 9 November 2026 after the five-file draft:
+
+- `py -I -B -m unittest discover -s tests -p '*checks.py' -v`: 12/12 passed in 1.279 seconds. This is a fresh read-only Python/history run, not the old nine-test result. No Python/test source changed.
+- Local Markdown target and heading-anchor validation: all 103 link/image/anchor references across the five files passed. Existing cover/globe PNGs were embedded by reference only.
+- HTTP HEAD validation: seven unique external URLs returned 200, including GitHub repository/commit links, the two Python documentation URLs, historical RKSI URL and FAA PDF URL. This establishes current reachability only. No new source-content verification, downloaded replacement asset or claim that historical access limitations never occurred is made; the FAA reader-size limitation and unreconfirmed historical content remain documented.
+- Historical preservation checks: original PRD draft prefix unchanged; complete original pre-release audit body retained contiguously; original V4 log entries retained as a prefix except the approved current-status correction; superseded front matter archived verbatim; all original fenced prompt text retained. Other original prompt/conversation files are untouched.
+- SHA-256 comparison against the clean pre-edit 64-file snapshot: exactly README.md, PRD.md, prompts/codex-development-v4.md and artifacts/v4/pre-release-audit.md changed among tracked files. All other 60 tracked files, including application/style/Python/JavaScript/test/data/screenshot/vendor and earlier prompt records, remain byte-identical. Only new prompts/ai-development-audit.md was added.
+- Fresh pre-edit Git/GitHub verification: published main and local HEAD equal 4e73a2a528395aa939251579dfd51ca6e8089a86; correct root tree b55274ba1efbba6658d9bd57e087b65b6136d9c1; complete 64-file path/mode/blob-SHA maps match; original release delta is 25 paths; public visibility, V1 ancestry and V2/V3 tag identities/targets confirmed. These are release facts, not claims that this local five-file follow-up was published.
+- `git diff --check`: passed with no whitespace errors. No application/browser suite, generator, migration or downloader was run for documentation-only changes; the 29-group/48-combination/30-layout browser report remains historical and byte-identical.
+
+Remaining limitations: no complete raw conversation export or original selected reference bitmap was recovered; the index explicitly labels summaries/user reports and unavailable evidence. The external floating-point failure remains unconfirmed despite passing native/ZIP model checks; it is separate from the resolved publication verification assumption. Physical projector, hardware GPU, assistive-technology, actual touch-device and cross-browser validation remain unperformed as previously disclosed. No institutional rubric beyond available records was invented. No commit, staging, push, tag, history rewrite or release change is authorized or performed for this follow-up. Final local scope/diff and integrity checks are reported to the user for explicit approval.
+
+## Final documentation publication approval
+
+These original user prompts are copied from the available conversation. They authorize only the approved five-file documentation commit and normal branch-only publication; the earlier pending-approval checkpoints remain historical records.
+
+### Exact documentation publication approval
+
+```text
+I approve the final documentation-only commit and push procedure exactly as proposed.
+
+Please proceed under these strict conditions:
+
+1. Confirm that local HEAD and remote main still point to the original published V4 commit `4e73a2a528395aa939251579dfd51ca6e8089a86` before making changes.
+2. Stage only the five approved documentation paths.
+3. Verify the staged diff and run `git diff --cached --check`.
+4. Create one new documentation commit with the proposed message: `Docs - finalize Version 4 submission evidence`.
+5. Push normally to `origin/main`, without force-pushing or pushing tags.
+6. Verify the new remote commit, all five published documentation files, unchanged application files, preserved V1–V4 history and tags, and clean local working tree.
+7. Report the final commit SHA, publication status, and any remaining limitations.
+
+Stop immediately and ask for approval if any unexpected change, conflict, or verification failure occurs.
+
+Do not modify application code, datasets, formulas, tests, screenshots, dependencies, or historical Git records.
+```
+
+### Exact additional safety-check request
+
+```text
+Before proceeding, please add two safety checks:
+
+1. Verify that the exact current-status sentence being replaced occurs exactly once in `prompts/codex-development-v4.md`. Stop if it does not.
+2. After the replacement, verify that exactly the five previously approved documentation paths are modified, with no staged or unrelated changes.
+
+Then proceed with the approved documentation-only commit and normal non-force push, provided all previously agreed safety checks pass.
+
+Do not modify application code, datasets, tests, screenshots, historical commits, or tags. Do not amend or force-push.
+
+After publication, verify the remote commit and report its exact SHA, the five published files, and the final Git status.
+```
+
+### Guarded publication preflight — executed before staging
+
+The previous interrupted edit had not executed: the old exact current-status text occurred once, the new text occurred zero times and no publication-approval appendix existed. Before editing, Codex confirmed local version-4 HEAD and remote main at the original V4 application commit 4e73a2a528395aa939251579dfd51ca6e8089a86, an empty index and exactly the approved five documentation paths. Annotated V2/V3 tag objects matched the protected releases. The exact old current-status occurrence count was checked again immediately before replacement and required to equal one; the replacement itself was checked to remove that active text and introduce exactly one new current-status entry. The old wording is preserved below only as historical metadata, not as a second active status or user prompt:
+
+> **Current status:** Version 4 was successfully published to public GitHub main at 4e73a2a528395aa939251579dfd51ca6e8089a86. The local branch is version-4. This approved five-file documentation-only follow-up is being prepared locally; no further commit or push is authorized. Historical pre-release prompts/results below retain their original checkpoint meaning. The external floating-point observation remains unconfirmed.
+
+Only the existing V4 log was edited at this checkpoint, to record authorization and these checks. Immediate post-edit assertions require the exact five approved documentation paths, no staged/unrelated changes and unchanged protected-file hashes. The 64-file application release and its original 25-path delta remain immutable; this documentation follow-up adds one evidence index and modifies four existing documentation files. No code, data, tests, screenshots, dependencies, commit history or tag was edited.
+
+Next authorized actions are a no-tags fetch/recheck, explicit staging of only README.md, PRD.md, prompts/codex-development-v4.md, artifacts/v4/pre-release-audit.md and prompts/ai-development-audit.md, exact staged-diff/whitespace checks, one commit titled Docs - finalize Version 4 submission evidence, a final remote-main check, and a normal branch-only push with automatic tag following disabled. Unexpected movement/failure requires stopping. This pre-commit record does not predict a commit hash or claim publication/verification before execution; actual results are established by Git metadata and reported after remote verification. The prior scientific, source-content, evidence-coverage and manual-testing limitations remain disclosed.
